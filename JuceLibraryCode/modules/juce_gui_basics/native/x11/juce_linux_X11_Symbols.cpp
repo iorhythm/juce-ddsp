@@ -29,14 +29,14 @@ namespace juce
 namespace X11SymbolHelpers
 {
 
-template<typename FuncPtr>
+template <typename FuncPtr>
 struct SymbolBinding
 {
     FuncPtr& func;
     const char* name;
 };
 
-template<typename FuncPtr>
+template <typename FuncPtr>
 SymbolBinding<FuncPtr> makeSymbolBinding (FuncPtr& func, const char* name)
 {
     return { func, name };
@@ -54,19 +54,19 @@ bool loadSymbols (DynamicLibrary& lib, SymbolBinding<FuncPtr> binding)
     return false;
 }
 
-template<typename FuncPtr, typename... Args>
+template <typename FuncPtr, typename... Args>
 bool loadSymbols (DynamicLibrary& lib1, DynamicLibrary& lib2, SymbolBinding<FuncPtr> binding)
 {
     return loadSymbols (lib1, binding) || loadSymbols (lib2, binding);
 }
 
-template<typename FuncPtr, typename... Args>
+template <typename FuncPtr, typename... Args>
 bool loadSymbols (DynamicLibrary& lib, SymbolBinding<FuncPtr> binding, Args... args)
 {
     return loadSymbols (lib, binding) && loadSymbols (lib, args...);
 }
 
-template<typename FuncPtr, typename... Args>
+template <typename FuncPtr, typename... Args>
 bool loadSymbols (DynamicLibrary& lib1, DynamicLibrary& lib2, SymbolBinding<FuncPtr> binding, Args... args)
 {
     return loadSymbols (lib1, lib2, binding) && loadSymbols (lib1, lib2, args...);
@@ -127,6 +127,7 @@ bool X11Symbols::loadAllSymbols()
                        makeSymbolBinding (xGetErrorDatabaseText,       "XGetErrorDatabaseText"),
                        makeSymbolBinding (xGetErrorText,               "XGetErrorText"),
                        makeSymbolBinding (xGetGeometry,                "XGetGeometry"),
+                       makeSymbolBinding (xGetImage,                   "XGetImage"),
                        makeSymbolBinding (xGetInputFocus,              "XGetInputFocus"),
                        makeSymbolBinding (xGetModifierMapping,         "XGetModifierMapping"),
                        makeSymbolBinding (xGetPointerMapping,          "XGetPointerMapping"),
@@ -181,12 +182,14 @@ bool X11Symbols::loadAllSymbols()
                        makeSymbolBinding (xSetWMNormalHints,           "XSetWMNormalHints"),
                        makeSymbolBinding (xStringListToTextProperty,   "XStringListToTextProperty"),
                        makeSymbolBinding (xSync,                       "XSync"),
+                       makeSymbolBinding (xSynchronize,                "XSynchronize"),
                        makeSymbolBinding (xTranslateCoordinates,       "XTranslateCoordinates"),
                        makeSymbolBinding (xrmUniqueQuark,              "XrmUniqueQuark"),
                        makeSymbolBinding (xUngrabPointer,              "XUngrabPointer"),
                        makeSymbolBinding (xUngrabServer,               "XUngrabServer"),
                        makeSymbolBinding (xUnlockDisplay,              "XUnlockDisplay"),
                        makeSymbolBinding (xUnmapWindow,                "XUnmapWindow"),
+                       makeSymbolBinding (xutf8TextListToTextProperty, "Xutf8TextListToTextProperty"),
                        makeSymbolBinding (xWarpPointer,                "XWarpPointer")))
         return false;
 

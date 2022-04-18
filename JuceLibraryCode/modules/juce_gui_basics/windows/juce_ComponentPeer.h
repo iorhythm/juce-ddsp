@@ -70,7 +70,8 @@ public:
                                                         performAnyPendingRepaintsNow() method is called. */
         windowIgnoresKeyPresses     = (1 << 10),   /**< Tells the window not to catch any keypresses. This can
                                                         be used for things like plugin windows, to stop them interfering
-                                                        with the host's shortcut keys */
+                                                        with the host's shortcut keys. This will prevent the window from
+                                                        gaining keyboard focus. */
         windowIsSemiTransparent     = (1 << 30)    /**< Not intended for public use - makes a window transparent. */
 
     };
@@ -176,7 +177,7 @@ public:
     /** Returns the area in peer coordinates that is covered by the given sub-comp (which
         may be at any depth)
     */
-    Rectangle<int> getAreaCoveredBy (Component& subComponent) const;
+    Rectangle<int> getAreaCoveredBy (const Component& subComponent) const;
 
     /** Minimises the window. */
     virtual void setMinimised (bool shouldBeMinimised) = 0;
@@ -246,8 +247,8 @@ public:
     */
     virtual bool setAlwaysOnTop (bool alwaysOnTop) = 0;
 
-    /** Brings the window to the top, optionally also giving it focus. */
-    virtual void toFront (bool makeActive) = 0;
+    /** Brings the window to the top, optionally also giving it keyboard focus. */
+    virtual void toFront (bool takeKeyboardFocus) = 0;
 
     /** Moves the window to be just behind another one. */
     virtual void toBehind (ComponentPeer* other) = 0;
@@ -412,23 +413,63 @@ public:
     */
     virtual double getPlatformScaleFactor() const noexcept    { return 1.0; }
 
+    /** On platforms that support it, this will update the window's titlebar in some
+        way to indicate that the window's document needs saving.
+    */
+    virtual void setHasChangedSinceSaved (bool) {}
+
+
+    enum class Style
+    {
+        /** A style that matches the system-wide style. */
+        automatic,
+
+        /** A light style, which will probably use dark text on a light background. */
+        light,
+
+        /** A dark style, which will probably use light text on a dark background. */
+        dark
+    };
+
+    /** On operating systems that support it, this will update the style of this
+        peer as requested.
+
+        Note that this will not update the theme system-wide. This will only
+        update UI elements so that they display appropriately for this peer!
+    */
+    void setAppStyle (Style s)
+    {
+        if (std::exchange (style, s) != style)
+            appStyleChanged();
+    }
+
+    /** Returns the style requested for this app. */
+    Style getAppStyle() const { return style; }
+
 protected:
     //==============================================================================
+    static void forceDisplayUpdate();
+
     Component& component;
     const int styleFlags;
     Rectangle<int> lastNonFullscreenBounds;
     ComponentBoundsConstrainer* constrainer = nullptr;
     static std::function<ModifierKeys()> getNativeRealtimeModifiers;
     ListenerList<ScaleFactorListener> scaleFactorListeners;
+    Style style = Style::automatic;
 
 private:
     //==============================================================================
+    virtual void appStyleChanged() {}
+
+    Component* getTargetForKeyPress();
+
     WeakReference<Component> lastFocusedComponent, dragAndDropTargetComponent;
     Component* lastDragAndDropCompUnderMouse = nullptr;
     const uint32 uniqueID;
     bool isWindowMinimised = false;
-    Component* getTargetForKeyPress();
 
+    //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComponentPeer)
 };
 

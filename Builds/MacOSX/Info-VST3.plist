@@ -10,7 +10,7 @@
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>
-    <string>com.yourcompany.DDSPSynth</string>
+    <string>com.SMC704.DDSPSynth</string>
     <key>CFBundleName</key>
     <string>DDSPSynth</string>
     <key>CFBundleDisplayName</key>

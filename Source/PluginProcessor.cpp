@@ -448,7 +448,7 @@ void DdspsynthAudioProcessor::parameterChanged(const juce::String & parameterID,
         }
         else
         {
-            juce::AlertWindow::showMessageBox(juce::AlertWindow::AlertIconType::WarningIcon, "Model not found!", "The plugin expected to find the " + modelName + " model in this path:\n" + modelPath);
+            juce::AlertWindow::showMessageBoxAsync(juce::AlertWindow::AlertIconType::WarningIcon, "Model not found!", "The plugin expected to find the " + modelName + " model in this path:\n" + modelPath);
         }
     }
     if (parameterID == "modelSelect" || parameterID == "modelOn")

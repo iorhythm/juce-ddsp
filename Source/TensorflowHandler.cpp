@@ -63,7 +63,7 @@ TensorflowHandler::~TensorflowHandler()
 
 void TensorflowHandler::unloadModel()
 {
-	if (tfGraph != NULL)
+	if (tfGraph != nullptr)
 	{
 #if JUCE_WINDOWS
 		fpDeleteTensor(f0InputTensor);
@@ -91,16 +91,16 @@ void TensorflowHandler::unloadModel()
         
 #endif
         
-		tfGraph = NULL;
-		tfStatus = NULL;
-		tfSessionOpts = NULL;
-		tfSession = NULL;
-		tfInput = NULL;
-		tfOutput = NULL;
-		tfInputValues = NULL;
-		tfOutputValues = NULL;
-		f0InputTensor = NULL;
-		ldInputTensor = NULL;
+		tfGraph = nullptr;
+		tfStatus = nullptr;
+		tfSessionOpts = nullptr;
+		tfSession = nullptr;
+		tfInput = nullptr;
+		tfOutput = nullptr;
+		tfInputValues = nullptr;
+		tfOutputValues = nullptr;
+		f0InputTensor = nullptr;
+		ldInputTensor = nullptr;
 	}
 }
 
@@ -115,7 +115,7 @@ void TensorflowHandler::loadModel(const char* path)
 	tfGraph = fpNewGraph();
 	tfStatus = fpNewStatus();
 	tfSessionOpts = fpNewSessionOpts();
-	tfSession = fpLoadSession(tfSessionOpts, tfRunOpts, path, &tags, ntags, tfGraph, NULL, tfStatus);
+	tfSession = fpLoadSession(tfSessionOpts, tfRunOpts, path, &tags, ntags, tfGraph, nullptr, tfStatus);
 	
 	tfInput = (TF_Output*)malloc(sizeof(TF_Output) * numInputs);
 	f0Input = { fpGraphOperation(tfGraph, "serving_default_input_1"), 0 };

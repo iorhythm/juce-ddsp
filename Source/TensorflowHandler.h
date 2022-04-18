@@ -49,25 +49,25 @@ private:
 
 	juce::DynamicLibrary tfLibrary;
 
-	TF_Graph* tfGraph = NULL;
-	TF_Status* tfStatus = NULL;
-	TF_SessionOptions* tfSessionOpts = NULL;
-	TF_Session* tfSession = NULL;
-	TF_Buffer* tfRunOpts = NULL;
+	TF_Graph* tfGraph = nullptr;
+	TF_Status* tfStatus = nullptr;
+	TF_SessionOptions* tfSessionOpts = nullptr;
+	TF_Session* tfSession = nullptr;
+	TF_Buffer* tfRunOpts = nullptr;
 
 	int numInputs = 2;
-	TF_Output* tfInput = NULL;
+	TF_Output* tfInput = nullptr;
 	TF_Output f0Input;
 	TF_Output ldInput;
 
 	int numOutputs = 3;
-	TF_Output* tfOutput = NULL;
+	TF_Output* tfOutput = nullptr;
 	TF_Output ampsOutput;
 	TF_Output harmsOutput;
 	TF_Output magsOutput;
 
-	TF_Tensor** tfInputValues = NULL;
-	TF_Tensor** tfOutputValues = NULL;
+	TF_Tensor** tfInputValues = nullptr;
+	TF_Tensor** tfOutputValues = nullptr;
 
 	int numInputDims = 3;
 	int64_t inputDims[3] = { 1,timeSteps,1 };
