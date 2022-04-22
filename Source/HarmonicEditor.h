@@ -1,36 +1,56 @@
 /*
   ==============================================================================
 
-    HarmonicEditor.h
-    Created: 10 Nov 2020 2:44:17pm
-    Author:  Robin Otterbein
+	HarmonicEditor.h
+	Created: 10 Nov 2020 2:44:17pm
+	Author:  Robin Otterbein
 
   ==============================================================================
 */
-
 #pragma once
 
 #include <JuceHeader.h>
-#include "HarmonicSlider.h"
 
-//==============================================================================
-/*
-*/
-class HarmonicEditor  : public juce::Component
+
+class HarmonicSlider : public Component
 {
 public:
+	HarmonicSlider() = default;
+	~HarmonicSlider() override = default;
 
-    HarmonicEditor();
-    ~HarmonicEditor() override;
+	void paint( Graphics& ) override;
+	void resized() override;
 
-    void paint (juce::Graphics&) override;
-    void resized() override;
+	void setValue( const float );
 
-    void mouseEnter(const juce::MouseEvent&) override;
-    void mouseExit(const juce::MouseEvent&) override;
-    void mouseDown(const juce::MouseEvent&) override;
-    void mouseUp(const juce::MouseEvent&) override;
-    void mouseDrag(const juce::MouseEvent&) override;
+private:
+	bool isEntered;
+	bool isDown;
+
+	Colour colour{ Colours::black };
+	Rectangle<int> rectangle;
+	float value{ 0.5f };
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR( HarmonicSlider )
+};
+
+
+class HarmonicEditor : public Component
+{
+public:
+	static constexpr int maxNumberOfHarmonics = 100;
+	
+	HarmonicEditor();
+	~HarmonicEditor() override = default;
+
+	void paint (Graphics&) override;
+	void resized() override;
+
+	void mouseEnter(const MouseEvent&) override;
+	void mouseExit(const MouseEvent&) override;
+	void mouseDown(const MouseEvent&) override;
+	void mouseUp(const MouseEvent&) override;
+	void mouseDrag(const MouseEvent&) override;
 
 	struct Listener
 	{
@@ -39,21 +59,19 @@ public:
 
 	void setListener(Listener* pTheListener);
 
-    void setNumberOfHarmonicSliders(int nHarmonicsNew);
-    void createHarmonicSliders();
-    void resetSliders();
+	void setNumberOfHarmonicSliders(const int nHarmonicsNew);
+	void createHarmonicSliders();
+	void resetSliders();
 
 private:
+	bool isEntered { false };
+	bool isDown { false };
+	
+	OwnedArray<HarmonicSlider> harmonicSliders;
 
-    bool isEntered;
-    bool isDown;
-    
-    juce::OwnedArray<HarmonicSlider> harmonicSliders;
-
-    const static int maxNumberOfHarmonics = 100;
-    int nHarmonics = 60;
+	int nHarmonics = 60;
 	double harmonicValues[maxNumberOfHarmonics];
-	Listener* pListener = NULL;
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HarmonicEditor)
+	Listener* pListener = nullptr;
+	
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HarmonicEditor)
 };

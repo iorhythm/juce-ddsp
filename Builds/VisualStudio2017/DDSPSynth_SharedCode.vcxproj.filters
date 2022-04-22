@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="DDSPSynth\Source\UI">
+      <UniqueIdentifier>{C268CAF3-EB63-81A2-9C83-689CAEC0E1BF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="DDSPSynth\Source\DDSP">
       <UniqueIdentifier>{A0E2CC57-5BD7-1880-FBF6-2D61A6369CE7}</UniqueIdentifier>
     </Filter>
@@ -484,6 +487,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AdditiveComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DDSP_UI.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HarmonicEditor.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HarmonicSlider.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\InputComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MainComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ModelComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ModulationComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OutputComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ReverbComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SpectogramComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SubtractiveComponent.cpp">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\codegen\fftshift.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
@@ -583,46 +625,10 @@
     <ClCompile Include="..\..\Source\codegen\subtractive.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\PluginProcessor.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
       <Filter>DDSPSynth\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\MainComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\InputComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\ModelComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\ModulationComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AdditiveComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SubtractiveComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\ReverbComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SpectogramComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\OutputComponent.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\HarmonicEditor.cpp">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\HarmonicSlider.cpp">
+    <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>DDSPSynth\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_analytics\analytics\juce_Analytics.cpp">
@@ -2868,6 +2874,45 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\AdditiveComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DDSP_UI.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HarmonicEditor.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HarmonicSlider.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\InputComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MainComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ModelComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ModulationComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OutputComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ReverbComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SpectogramComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SubtractiveComponent.h">
+      <Filter>DDSPSynth\Source\UI</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AubioHandler.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
@@ -2994,46 +3039,10 @@
     <ClInclude Include="..\..\Source\codegen\tmwtypes.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PluginProcessor.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
       <Filter>DDSPSynth\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\MainComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\InputComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ModelComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ModulationComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AdditiveComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\SubtractiveComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ReverbComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\SpectogramComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\OutputComponent.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\HarmonicEditor.h">
-      <Filter>DDSPSynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\HarmonicSlider.h">
+    <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>DDSPSynth\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_analytics\analytics\juce_Analytics.h">

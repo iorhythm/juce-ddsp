@@ -21,10 +21,10 @@ TensorflowHandler::TensorflowHandler()
 #if JUCE_WINDOWS
 	DBG("Loading TF LIB...");
     
-	juce::File cwd = juce::File::getSpecialLocation(juce::File::currentApplicationFile).getParentDirectory();
+	File cwd = File::getSpecialLocation(File::currentApplicationFile).getParentDirectory();
     const char* libFileName = "tensorflow.dll";
 
-    bool loaded = tfLibrary.open(cwd.getFullPathName() + juce::File::getSeparatorString() + libFileName);
+    bool loaded = tfLibrary.open(cwd.getFullPathName() + File::getSeparatorString() + libFileName);
 	if (loaded)
 		DBG("success");
 	else
@@ -107,7 +107,7 @@ void TensorflowHandler::unloadModel()
 void TensorflowHandler::loadModel(const char* path)
 {
 	// make sure no one tries to run the model while we're changing it
-	const juce::ScopedLock loadLock(lock);
+	const ScopedLock loadLock(lock);
 	
 	unloadModel();
 
@@ -175,7 +175,7 @@ void TensorflowHandler::loadModel(const char* path)
 void TensorflowHandler::setInputs(float f0, float amps)
 {	
 	// this might/should be changed into ScopedTryLock and returning false
-	const juce::ScopedLock loadLock(lock);
+	const ScopedLock loadLock(lock);
 
 #if JUCE_WINDOWS
 	float* f0InputData = (float*)fpTensorData(tfInputValues[0]);
@@ -195,7 +195,7 @@ void TensorflowHandler::setInputs(float f0, float amps)
 void TensorflowHandler::run()
 {
 	// this might/should be changed into ScopedTryLock and returning false
-	const juce::ScopedLock loadLock(lock);
+	const ScopedLock loadLock(lock);
 
 	TensorflowHandler::ModelResults _results;
 

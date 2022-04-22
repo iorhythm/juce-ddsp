@@ -1,88 +1,85 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #include "PluginEditor.h"
 
-//==============================================================================
-DdspsynthAudioProcessorEditor::DdspsynthAudioProcessorEditor (DdspsynthAudioProcessor& p, juce::AudioProcessorValueTreeState& svts, juce::AudioProcessorValueTreeState& mvts)
-    : AudioProcessorEditor (&p), audioProcessor (p), synthVTS(svts), modelVTS(mvts), mainComponent(svts, mvts)
+
+DdspsynthAudioProcessorEditor::DdspsynthAudioProcessorEditor( DdspsynthAudioProcessor& p, AudioProcessorValueTreeState& svts, AudioProcessorValueTreeState& mvts ) :
+	AudioProcessorEditor( &p ),
+	audioProcessor( p ),
+	synthVTS( svts ),
+	modelVTS( mvts ),
+	mainComponent( svts, mvts )
 {
-    //LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName("Avenir Next");
+	//backgroundTexture = backgroundTexture.rescaled(900, 600);
+	//additive = (AdditiveComponent*)mainComponent.findChildWithID("additive");
+	//harmEditor = (HarmonicEditor*)(additive->findChildWithID("harmonicEditor"));
+	//subtractive = (SubtractiveComponent*)(mainComponent.findChildWithID("subtractive"));
+	//output = (OutputComponent*)mainComponent.findChildWithID("output");
 
-    backgroundTexture = backgroundTexture.rescaled(900, 600);
-    addAndMakeVisible(mainComponent);
-	additive = (AdditiveComponent*)mainComponent.findChildWithID("additive");
-	harmEditor = (HarmonicEditor*)(additive->findChildWithID("harmonicEditor"));
-    subtractive = (SubtractiveComponent*)(mainComponent.findChildWithID("subtractive"));
-    output = (OutputComponent*)mainComponent.findChildWithID("output");
+	mainComponent.additiveComponent.harmonicEditor.setListener( &p );
+	//subtractive->setSubtractiveListener(this);
+	//additive->setAdditiveListener(this);
+	//output->setOutputListener(this);
 
+	mainComponent.setLookAndFeel( &otherLookAndFeel );
+	addAndMakeVisible( mainComponent );
 
-	harmEditor->setListener(&p);
- //   subtractive->setSubtractiveListener(this);
- //   additive->setAdditiveListener(this);
- //   output->setOutputListener(this);
-	
-    mainComponent.setBounds(20, 20, 860, 560);
-    startTimerHz (60);
-    setSize (900, 600);
-    
-    mainComponent.setLookAndFeel(&otherLookAndFeel);
+	defaultTreeState = svts.copyState();
 
-    defaultTreeState = svts.copyState();
+	startTimerHz( 60 );
+	setSize( 900, 600 );
 }
+
 
 DdspsynthAudioProcessorEditor::~DdspsynthAudioProcessorEditor()
 {
-    mainComponent.setLookAndFeel(nullptr);
+	mainComponent.setLookAndFeel( nullptr );
+	stopTimer();
 }
 
-//==============================================================================
-void DdspsynthAudioProcessorEditor::paint (juce::Graphics& g)
+
+void DdspsynthAudioProcessorEditor::paint( Graphics& g )
 {
-    
-    g.drawImageAt(backgroundTexture, 0, 0);
-    
+	//g.drawImageAt(backgroundTexture, 0, 0);
+	g.fillAll( Colour{ 0xFF111111 } );
 }
+
 
 void DdspsynthAudioProcessorEditor::resized()
 {
-    
+	auto r{ getLocalBounds().reduced( 10 ) };
+
+	mainComponent.setBounds( r );
 }
 
-//===============================================================================
+
 // Spectrogram methods
 void DdspsynthAudioProcessorEditor::timerCallback()
 {
-    if (audioProcessor.getNextFFTBlockReady())
-    {
-        mainComponent.drawNextLineOfSpectrogram(audioProcessor.getFftSize(),
-                                                audioProcessor.getFftData(),
-                                                *audioProcessor.getForwardFFT(),
-                                                audioProcessor.getFftOrder());
-        audioProcessor.setNextFFTBlockReady(false);
-    }
-    setNumberOfHarmonics(audioProcessor.getNumberOfHarmonics());
+	if(audioProcessor.getNextFFTBlockReady())
+	{
+		mainComponent.spectogramComponent.drawNextLineOfSpectrogram( audioProcessor.getFftSize(),
+			audioProcessor.getFftData(),
+			*audioProcessor.getForwardFFT(),
+			audioProcessor.getFftOrder() );
+		audioProcessor.setNextFFTBlockReady( false );
+	}
+
+	setNumberOfHarmonics( audioProcessor.getNumberOfHarmonics() );
 }
 
-void DdspsynthAudioProcessorEditor::setNumberOfHarmonics(int numberOfHarmonics)
+
+void DdspsynthAudioProcessorEditor::setNumberOfHarmonics( const int numberOfHarmonics )
 {
-    if (harmEditor != nullptr)
-    {
-        harmEditor->setNumberOfHarmonicSliders(numberOfHarmonics);
-    }
+	mainComponent.additiveComponent.harmonicEditor.setNumberOfHarmonicSliders( numberOfHarmonics );
 }
+
 
 void DdspsynthAudioProcessorEditor::resetParameters()
 {
-    harmEditor->resetSliders();
-    auto tmpCopy = defaultTreeState.createCopy();
-    synthVTS.replaceState(defaultTreeState);
-    defaultTreeState = tmpCopy;
+	mainComponent.additiveComponent.harmonicEditor.resetSliders();
+
+	auto tmpCopy = defaultTreeState.createCopy();
+	synthVTS.replaceState( defaultTreeState );
+	defaultTreeState = tmpCopy;
 }
 
 

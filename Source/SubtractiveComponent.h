@@ -1,69 +1,52 @@
 /*
   ==============================================================================
 
-    SubtractiveComponent.h
-    Created: 7 Nov 2020 2:09:03am
-    Author:  Robin Otterbein
+	SubtractiveComponent.h
+	Created: 7 Nov 2020 2:09:03am
+	Author:  Robin Otterbein
 
   ==============================================================================
 */
-
 #pragma once
 
-#include <JuceHeader.h>
+#include "DDSP_UI.h"
 
-//==============================================================================
-/*
-*/
-class SubtractiveComponent  : public juce::Component/*, public juce::Slider::Listener, public juce::ToggleButton::Listener*/
+
+class SubtractiveComponent : public Component/*, public Slider::Listener, public ToggleButton::Listener*/
 {
 public:
-    SubtractiveComponent(juce::AudioProcessorValueTreeState&);
-    ~SubtractiveComponent() override;
+	SubtractiveComponent(AudioProcessorValueTreeState&);
+	~SubtractiveComponent() override = default;
 
-    void paint (juce::Graphics&) override;
-    void resized() override;
+	void paint (Graphics&) override;
+	void resized() override;
 
+	//struct SubtractiveListener
+	//{
+	//    virtual void onNoiseColorChange(double color) = 0;
+	//    virtual void onOnOffSubChange(bool onOff) = 0;
+	//    virtual void onSubAmpChange(double subAmp) = 0;
+	//};
 
-    //struct SubtractiveListener
-    //{
-    //    virtual void onNoiseColorChange(double color) = 0;
-    //    virtual void onOnOffSubChange(bool onOff) = 0;
-    //    virtual void onSubAmpChange(double subAmp) = 0;
-    //};
-
-    //void setSubtractiveListener(SubtractiveListener* subListener);
+	//void setSubtractiveListener(SubtractiveListener* subListener);
 
 private:
+	DDSPLabel nameLabel { "NOISE", 17.0f };
 
-    juce::AudioProcessorValueTreeState& valueTreeState;
+	AttachedImageButton onoffButton;
 
-    typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
-    typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+	AttachedLabelledSlider ampSlider;
+	AttachedLabelledSlider colourSlider;
 
-    juce::ImageButton onoffButton;
-    std::unique_ptr<ButtonAttachment> onoffAttachment;
+	double noiseColor {};
+	double subAmp {};
+	bool onOffState { true };
 
-    juce::Label nameLabel;
-    juce::Label onoffLabel;
-    juce::Slider ampSlider;
-    juce::Label ampLabel;
-    std::unique_ptr <SliderAttachment> ampAttachment;
+	//SubtractiveListener* subtractiveListener = NULL;
 
-    juce::Slider colourSlider;
-    juce::Label colourLabel;
-    std::unique_ptr <SliderAttachment> colorAttachment;
+	//// Inherited via Listener
+	//void buttonClicked(Button*) override;
+	//void sliderValueChanged(Slider* slider) override;
 
-    double noiseColor = 0;
-    double subAmp = 0;
-    bool onOffState = true;
-
-    //SubtractiveListener* subtractiveListener = NULL;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SubtractiveComponent)
-
-        //// Inherited via Listener
-        //void buttonClicked(juce::Button*) override;
-        //void sliderValueChanged(juce::Slider* slider) override;
-
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SubtractiveComponent)
 };

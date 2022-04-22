@@ -57,6 +57,7 @@
 		6F23737EFC6E779F7617EF35 /* include_juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = AFA66E82029952F775AFC402; };
 		705E11C666F740257FE99DC2 /* sortIdx.cpp */ = {isa = PBXBuildFile; fileRef = B54D6529E44C87B1188854C8; };
 		738649E748051987CB7187F9 /* SystemProp.cpp */ = {isa = PBXBuildFile; fileRef = 453494A016A2ECAC65EAF28F; };
+		7432B0AAC6C7BC1725E11678 /* DDSP_UI.cpp */ = {isa = PBXBuildFile; fileRef = B6C2E4D0417B802CCBAECED4; };
 		7646DCCA12C0E843D21A8209 /* compute_loudness.cpp */ = {isa = PBXBuildFile; fileRef = 6EF3EB873A894D266682ACC4; };
 		767EB6AC7BFAED6DB1025D1C /* subtractive.cpp */ = {isa = PBXBuildFile; fileRef = B39A4D8A206AFCD2306D4A87; };
 		7A261D3FC103D09F8E11EE14 /* include_juce_events.mm */ = {isa = PBXBuildFile; fileRef = F68A3328DF9721BC31B75A04; };
@@ -260,6 +261,7 @@
 		A36D427B0C72AA9A37035FD5 /* rtGetInf.h */ /* rtGetInf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rtGetInf.h; path = ../../Source/codegen/rtGetInf.h; sourceTree = SOURCE_ROOT; };
 		A3AC5E37EB93CF46290456F6 /* HarmonicSlider.cpp */ /* HarmonicSlider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HarmonicSlider.cpp; path = ../../Source/HarmonicSlider.cpp; sourceTree = SOURCE_ROOT; };
 		A51C28C18EBE39DA2206C558 /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		A5DC5430A7283C405EC22081 /* DDSP_UI.h */ /* DDSP_UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DDSP_UI.h; path = ../../Source/DDSP_UI.h; sourceTree = SOURCE_ROOT; };
 		A6083AE1FBA8D9D12E90FCC2 /* ModulationComponent.cpp */ /* ModulationComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModulationComponent.cpp; path = ../../Source/ModulationComponent.cpp; sourceTree = SOURCE_ROOT; };
 		A78FC3D46AE9A13864A0F6AE /* HarmonicSlider.h */ /* HarmonicSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HarmonicSlider.h; path = ../../Source/HarmonicSlider.h; sourceTree = SOURCE_ROOT; };
 		A7FEB22D490D6FD91716C385 /* rt_nonfinite.h */ /* rt_nonfinite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rt_nonfinite.h; path = ../../Source/codegen/rt_nonfinite.h; sourceTree = SOURCE_ROOT; };
@@ -272,6 +274,7 @@
 		B52BD5C9B8F9AE3CB6B92779 /* switch_left.png */ /* switch_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = switch_left.png; path = ../../Resources/switch_left.png; sourceTree = SOURCE_ROOT; };
 		B54D6529E44C87B1188854C8 /* sortIdx.cpp */ /* sortIdx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sortIdx.cpp; path = ../../Source/codegen/sortIdx.cpp; sourceTree = SOURCE_ROOT; };
 		B6712AC6E683598635529CCE /* DDSPSynth_rtwutil.h */ /* DDSPSynth_rtwutil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DDSPSynth_rtwutil.h; path = ../../Source/codegen/DDSPSynth_rtwutil.h; sourceTree = SOURCE_ROOT; };
+		B6C2E4D0417B802CCBAECED4 /* DDSP_UI.cpp */ /* DDSP_UI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DDSP_UI.cpp; path = ../../Source/DDSP_UI.cpp; sourceTree = SOURCE_ROOT; };
 		B88A35915D79E362F893ECCC /* AdditiveComponent.cpp */ /* AdditiveComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AdditiveComponent.cpp; path = ../../Source/AdditiveComponent.cpp; sourceTree = SOURCE_ROOT; };
 		B8B8C35E4A771AAB91B39BF3 /* include_juce_audio_plugin_client_VST_utils.mm */ /* include_juce_audio_plugin_client_VST_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_VST_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm; sourceTree = SOURCE_ROOT; };
 		B96F8EF8E2ED25F5B2CA1DBB /* PluginProcessor.h */ /* PluginProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../Source/PluginProcessor.h; sourceTree = SOURCE_ROOT; };
@@ -520,6 +523,39 @@
 			name = "JUCE Modules";
 			sourceTree = "<group>";
 		};
+		70358AD5327609D9916B7884 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B88A35915D79E362F893ECCC,
+				D4E7D9FF0CDADEAC2772D3C8,
+				3B37124069487E5A13881F05,
+				54F869B030B8ECCE8139113F,
+				B6C2E4D0417B802CCBAECED4,
+				A5DC5430A7283C405EC22081,
+				9F8212DFC1785EC050F046EA,
+				8C53939BC3315DB34C6770C0,
+				A3AC5E37EB93CF46290456F6,
+				A78FC3D46AE9A13864A0F6AE,
+				1FFF33976370A3AC2CB3AC57,
+				C7CA0BEF8CDF2CAB2B20CB86,
+				38F9890B117BD481B5E966C1,
+				7DCD1AC65965155279BCF45A,
+				38FEF7905E09AD5EC5121618,
+				5CE118D43A7EBAD9F6E1EDCB,
+				A6083AE1FBA8D9D12E90FCC2,
+				2174FCD5C9BF43A4E42DB94C,
+				1447D1548A04BFACEAA14C05,
+				0D12812DFB15CB5F979BDE93,
+				2D9FD2A7AB83FC0F8022817B,
+				45988032DD8EBCC5C7CBD376,
+				3E65B03BC2A95467602B852B,
+				7762A969C5AD95E70428F213,
+				FD6789CFBB6513221C44471F,
+				743B5775347022DE9CD2DB53,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		98CC898C707B54587FE07D7B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,35 +596,12 @@
 		D8FB82E6BB980FE8454CA0D7 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				70358AD5327609D9916B7884,
 				47D040ABFD1DFF5E2C074500,
-				E2E6A4DBCAE76720F164861E,
-				B96F8EF8E2ED25F5B2CA1DBB,
 				1027A6D67A559A0F80FE156F,
 				E9E3CAEC9F5DD1DE0D7016A1,
-				38F9890B117BD481B5E966C1,
-				7DCD1AC65965155279BCF45A,
-				1FFF33976370A3AC2CB3AC57,
-				C7CA0BEF8CDF2CAB2B20CB86,
-				38FEF7905E09AD5EC5121618,
-				5CE118D43A7EBAD9F6E1EDCB,
-				A6083AE1FBA8D9D12E90FCC2,
-				2174FCD5C9BF43A4E42DB94C,
-				B88A35915D79E362F893ECCC,
-				3B37124069487E5A13881F05,
-				54F869B030B8ECCE8139113F,
-				D4E7D9FF0CDADEAC2772D3C8,
-				FD6789CFBB6513221C44471F,
-				743B5775347022DE9CD2DB53,
-				2D9FD2A7AB83FC0F8022817B,
-				45988032DD8EBCC5C7CBD376,
-				3E65B03BC2A95467602B852B,
-				7762A969C5AD95E70428F213,
-				1447D1548A04BFACEAA14C05,
-				0D12812DFB15CB5F979BDE93,
-				9F8212DFC1785EC050F046EA,
-				8C53939BC3315DB34C6770C0,
-				A3AC5E37EB93CF46290456F6,
-				A78FC3D46AE9A13864A0F6AE,
+				E2E6A4DBCAE76720F164861E,
+				B96F8EF8E2ED25F5B2CA1DBB,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -878,6 +891,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF7A68A022BAED744891142F,
+				282FE7BD70737D2117D8CEA2,
+				7432B0AAC6C7BC1725E11678,
+				9B0D41F4363D63851D8D4E2E,
+				D6F4E0D447044C22CCD22D5B,
+				8E340051EB285B6F90D46AC4,
+				17D72AF46BA9AD0EE4BCEC3F,
+				7F6617C63079E7843D1BB90D,
+				DD135C9979BA40445D25E32D,
+				21A30C859249F8B48DEFFC7F,
+				A9954B3B3D578F7DF20CF25D,
+				2C233771C311C9C7B30BF4C7,
+				407593C46FF99D11CD86D4F4,
 				107A7B7BDA7928713FA1DDED,
 				D86B0053E108172DFB94872E,
 				999F20A7FE60E22AB953EEBC,
@@ -911,20 +937,8 @@
 				C5CFAA6EA517C5AFA44A89D5,
 				F6836B987B7C8F2D36E6037B,
 				767EB6AC7BFAED6DB1025D1C,
-				F6982829FDF604039CE59B27,
 				3610F5339822ADC0C99FB809,
-				17D72AF46BA9AD0EE4BCEC3F,
-				8E340051EB285B6F90D46AC4,
-				7F6617C63079E7843D1BB90D,
-				DD135C9979BA40445D25E32D,
-				FF7A68A022BAED744891142F,
-				282FE7BD70737D2117D8CEA2,
-				407593C46FF99D11CD86D4F4,
-				A9954B3B3D578F7DF20CF25D,
-				2C233771C311C9C7B30BF4C7,
-				21A30C859249F8B48DEFFC7F,
-				9B0D41F4363D63851D8D4E2E,
-				D6F4E0D447044C22CCD22D5B,
+				F6982829FDF604039CE59B27,
 				FC2C0EEA2B3CDA2D9225D05D,
 				BE7505DBC4D008418095E0C5,
 				B698C2772065C744B5ACD030,
@@ -981,7 +995,7 @@
 		10CE0C8D6B482C1EF9F62AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1097,7 +1111,7 @@
 		4E7B06D4117E2C1EB53CE86C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1220,7 +1234,7 @@
 		4EBBA88A7803F0557F13D5B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1342,7 +1356,7 @@
 		626A8A051261633A56AF1FBC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1467,7 +1481,7 @@
 		8382DA61D69F5C24BCB5DD0E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1585,7 +1599,7 @@
 		B997C09D0E372698C647DB4A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";

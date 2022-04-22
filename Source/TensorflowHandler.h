@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "tensorflow_c/include/tensorflow/c/c_api.h"
 
-class TensorflowHandler : public juce::Thread
+class TensorflowHandler : public Thread
 {
 public:
 	TensorflowHandler();
@@ -37,7 +37,7 @@ public:
 	void loadModel(const char* path);
 	void unloadModel();
 	void setInputs(float f0, float amps);
-	void setAsyncUpdater(juce::AsyncUpdater* _asyncUpdater) { processUpdater = _asyncUpdater; };
+	void setAsyncUpdater(AsyncUpdater* _asyncUpdater) { processUpdater = _asyncUpdater; };
 	ModelResults getOutputs() { return results; };
 
 	void run() override;
@@ -45,9 +45,9 @@ public:
 private:
 	//DdspsynthAudioProcessor* audioProcessor;
 
-	juce::CriticalSection lock;
+	CriticalSection lock;
 
-	juce::DynamicLibrary tfLibrary;
+	DynamicLibrary tfLibrary;
 
 	TF_Graph* tfGraph = nullptr;
 	TF_Status* tfStatus = nullptr;
@@ -82,7 +82,7 @@ private:
 	
 	ModelResults results;
 
-	juce::AsyncUpdater* processUpdater;
+	AsyncUpdater* processUpdater;
 
 	typedef TF_Graph* (*fptypeNewGraph) ();
 	fptypeNewGraph fpNewGraph;

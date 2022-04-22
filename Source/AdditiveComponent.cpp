@@ -1,207 +1,68 @@
 /*
   ==============================================================================
 
-    AdditiveComponent.cpp
-    Created: 7 Nov 2020 2:08:52am
-    Author:  Robin Otterbein
+	AdditiveComponent.cpp
+	Created: 7 Nov 2020 2:08:52am
+	Author:  Robin Otterbein
 
   ==============================================================================
 */
 
-#include <JuceHeader.h>
 #include "AdditiveComponent.h"
 
-//==============================================================================
-AdditiveComponent::AdditiveComponent(juce::AudioProcessorValueTreeState& vts)
-    : valueTreeState(vts)
+
+AdditiveComponent::AdditiveComponent( AudioProcessorValueTreeState& t ) :
+	onoffButton( "On/Off", t, "additiveOn" ),
+	shiftSlider{ "Shift", t, "additiveShift" },
+	stretchSlider{ "Stretch", t, "additiveStretch" },
+	ampSlider{ "Amp", t, "additiveGain" }
 {
-    float fontDim = 15.0f;
+	addAndMakeVisible( onoffButton );
+	onoffButton.button.setImages( false, true, true,
+		ImageFileFormat::loadFrom( BinaryData::power_png, BinaryData::power_pngSize ), {}, Colour::fromRGB( 100, 100, 100 ), //Normal
+		ImageFileFormat::loadFrom( BinaryData::power_png, BinaryData::power_pngSize ), {}, Colour::fromRGB( 200, 200, 200 ), //Over
+		ImageFileFormat::loadFrom( BinaryData::power_png, BinaryData::power_pngSize ), {}, Colour::fromRGB( 255, 255, 255 ), //Down
+		0.0f );
 
-    // OnOffButton
-    addAndMakeVisible(onoffButton);
-    onoffButton.setBounds(0, 0, 50, 50);
-    onoffButton.setClickingTogglesState(true);
-    onoffButton.setImages(false, true, false,
-        juce::ImageFileFormat::loadFrom(BinaryData::power_png, BinaryData::power_pngSize), {}, juce::Colour::fromRGB(100, 100, 100), //Normal
-        juce::ImageFileFormat::loadFrom(BinaryData::power_png, BinaryData::power_pngSize), {}, juce::Colour::fromRGB(200, 200, 200), //Over
-        juce::ImageFileFormat::loadFrom(BinaryData::power_png, BinaryData::power_pngSize), {}, juce::Colour::fromRGB(255, 255, 255), //Down
-        0.0f);
-    //onoffButton.setToggleState(true, NULL);
+	addAndMakeVisible( nameLabel );
 
-    addAndMakeVisible(onoffLabel);
-    onoffLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    onoffLabel.setJustificationType(juce::Justification::centred);
+	addChildAndSetID( &harmonicEditor, "harmonicEditor" );
 
-    onoffAttachment.reset(new ButtonAttachment(valueTreeState, "additiveOn", onoffButton));
+	addAndMakeVisible( shiftSlider );
+	addAndMakeVisible( stretchSlider );
 
-    addAndMakeVisible(nameLabel);
-    nameLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    nameLabel.setJustificationType(juce::Justification::topLeft);
-    nameLabel.setText("Harmonic Oscillator", juce::NotificationType::dontSendNotification);
-    nameLabel.setFont(20.0f);
-
-	addChildAndSetID(&harmonicEditor, "harmonicEditor");
-    harmonicEditor.setBounds(0, 0, 100, 100);
-    
-    // Shift slider
-    shiftSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    shiftSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-    shiftSlider.setPopupDisplayEnabled(true, true, this);
-    //shiftSlider.setTextValueSuffix (" Halftones");
-    //shiftSlider.setRange(-12.0f, 12.0f, 0.01f);
-    //shiftSlider.setValue(0);
-    addAndMakeVisible(shiftSlider);
-    shiftSlider.setBounds(0, 0, 100, 100);
-    shiftSlider.setDoubleClickReturnValue(true, 0.0f);
-
-    addAndMakeVisible(shiftLabel);
-    shiftLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    shiftLabel.setJustificationType(juce::Justification::topLeft);
-    shiftLabel.setText("Shift", juce::NotificationType::dontSendNotification);
-    shiftLabel.setFont(fontDim);
-
-    shiftAttachment.reset(new SliderAttachment(valueTreeState, "additiveShift", shiftSlider));
-
-    // Stretch slider
-    stretchSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    stretchSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-    stretchSlider.setPopupDisplayEnabled(true, true, this);
-    //stretchSlider.setTextValueSuffix (" ");
-    //stretchSlider.setRange(-1.0f, 1.0f, 0.01f);
-    //stretchSlider.setValue(0.0f);
-    addAndMakeVisible(stretchSlider);
-    stretchSlider.setBounds(0, 0, 100, 100);
-    //stretchSlider.addListener(this);
-    stretchSlider.setDoubleClickReturnValue(true, 0.0f);
-
-    addAndMakeVisible(stretchLabel);
-    stretchLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    stretchLabel.setJustificationType(juce::Justification::topLeft);
-    stretchLabel.setText("Stretch", juce::NotificationType::dontSendNotification);
-    stretchLabel.setFont(fontDim);
- 
-    stretchAttachment.reset(new SliderAttachment(valueTreeState, "additiveStretch", stretchSlider));
-
-    // Amp slider
-    ampSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    ampSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-    ampSlider.setPopupDisplayEnabled(true, true, this);
-    ampSlider.setTextValueSuffix (" dB");
-    //ampSlider.setRange(-60.0f, 0.0f, 0.1f);
-    //ampSlider.setValue(-6.0f);
-    addAndMakeVisible(ampSlider);
-    ampSlider.setBounds(0, 0, 100, 100);
-    //ampSlider.addListener(this);
-    ampSlider.setDoubleClickReturnValue(true, -6.0f);
-
-    addAndMakeVisible(ampLabel);
-    ampLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    ampLabel.setJustificationType(juce::Justification::topLeft);
-    ampLabel.setText("Amp", juce::NotificationType::dontSendNotification);
-    ampLabel.setFont(fontDim);
-    
-    ampAttachment.reset(new SliderAttachment(valueTreeState, "additiveGain", ampSlider));
+	ampSlider.slider.setTextValueSuffix( " dB" );
+	addAndMakeVisible( ampSlider );
 }
 
-AdditiveComponent::~AdditiveComponent()
+
+void AdditiveComponent::paint( Graphics& g )
 {
+	g.setColour( Colours::white );
+	g.drawRect( getLocalBounds(), 1 );
 }
 
-void AdditiveComponent::paint (juce::Graphics& g)
-{
-    g.setColour (juce::Colours::white);
-    g.drawRect (getLocalBounds(), 3);   // draw an outline around the component
-
-    /*
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("Additive", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text*/
-}
 
 void AdditiveComponent::resized()
 {
-    juce::Grid grid;
-     
-    using Track = juce::Grid::TrackInfo;
-    using Fr = juce::Grid::Fr;
+	static constexpr auto sliderDim{ 40 };
 
-    //4 rows
-    grid.templateRows    = {
-        Track (Fr (1)), Track (Fr (1)), Track (Fr (1)), Track (Fr (1))
-    };
-    //2 columns
-    grid.templateColumns = {
-        Track (Fr (1)), Track (Fr (1)), 
-    };
-    
-    grid.rowGap = juce::Grid::Px(10.0f);
-    grid.columnGap = juce::Grid::Px(10.0f);
+	auto r{ getLocalBounds().reduced( 4 ) };
 
-    float sliderDim = 50.0f;
+	auto titleArea{ r.removeFromTop( 25 ) };
 
-    grid.items = {
+	onoffButton.setBounds( titleArea.removeFromLeft( 25 ) );
+	nameLabel.setBounds( titleArea );
 
-        juce::GridItem(nameLabel).withSize(200.0f, 30.0f)
-            .withAlignSelf(juce::GridItem::AlignSelf::start)
-            .withJustifySelf(juce::GridItem::JustifySelf::start)
-            .withMargin(juce::GridItem::Margin(10.0f))
-            .withArea(1, 1),
+	harmonicEditor.setBounds( r.removeFromTop( 130 ) );
 
-        juce::GridItem(onoffButton).withSize(17.0f, 17.0f)
-            .withAlignSelf(juce::GridItem::AlignSelf::start)
-            .withJustifySelf(juce::GridItem::JustifySelf::end)
-            .withMargin(juce::GridItem::Margin(10.0f))
-            .withArea(1, 3),
-
-        juce::GridItem(shiftSlider).withSize(sliderDim, sliderDim)
-            .withAlignSelf(juce::GridItem::AlignSelf::start)
-            .withJustifySelf(juce::GridItem::JustifySelf::center)
-            .withMargin(juce::GridItem::Margin(10.0f, 0, 0, 0))
-            .withArea(4, 1),
-
-        juce::GridItem(shiftLabel).withSize(65.0f, 30.0f)
-            .withAlignSelf(juce::GridItem::AlignSelf::end)
-            .withJustifySelf(juce::GridItem::JustifySelf::center)
-            .withMargin(juce::GridItem::Margin(0, 0, 0, 27.0f))
-            .withArea(5, 1),
-
-        juce::GridItem(stretchSlider).withSize(sliderDim, sliderDim)
-            .withAlignSelf(juce::GridItem::AlignSelf::start)
-            .withJustifySelf(juce::GridItem::JustifySelf::end)
-            .withMargin(juce::GridItem::Margin(10.0f, 0, 0, 0))
-            .withArea(4, 1),
-
-        juce::GridItem(stretchLabel).withSize(65.0f, 30.0f)
-            .withAlignSelf(juce::GridItem::AlignSelf::end)
-            .withJustifySelf(juce::GridItem::JustifySelf::end)
-            .withMargin(juce::GridItem::Margin(0, -14.0f, 0, 0))
-            .withArea(5, 1),
-
-        juce::GridItem(ampSlider).withSize(sliderDim, sliderDim)
-            .withAlignSelf(juce::GridItem::AlignSelf::start)
-            .withJustifySelf(juce::GridItem::JustifySelf::end)
-            .withMargin(juce::GridItem::Margin(10.0f, 0, 0, 0))
-            .withArea(4, 2),
-
-        juce::GridItem(ampLabel).withSize(65.0f, 30.0f)
-            .withAlignSelf(juce::GridItem::AlignSelf::end)
-            .withJustifySelf(juce::GridItem::JustifySelf::end)
-            .withMargin(juce::GridItem::Margin(0, -21.0f, 0, 0))
-            .withArea(5, 2),
-
-        juce::GridItem(harmonicEditor).withSize(360.0f, 130.0f)
-            .withAlignSelf(juce::GridItem::AlignSelf::start)
-            .withJustifySelf(juce::GridItem::JustifySelf::start)
-            .withMargin(juce::GridItem::Margin(50.0f, 30.0f, 30.0f, 30.0f))
-            .withArea(1, 1),
-    };
-
-    grid.performLayout (getLocalBounds());
-    
+	shiftSlider.setBounds( r.removeFromTop( sliderDim ) );
+	stretchSlider.setBounds( r.removeFromTop( sliderDim ) );
+	ampSlider.setBounds( r.removeFromTop( sliderDim ) );
 }
 
-//void AdditiveComponent::sliderValueChanged(juce::Slider* slider)
+
+//void AdditiveComponent::sliderValueChanged(Slider* slider)
 //{
 //   if (additiveListener != NULL) {
 //        if (slider == &ampSlider) {
@@ -231,7 +92,7 @@ void AdditiveComponent::resized()
 //        additiveListener->onOnOffAddChange(onOffState);
 //}
 //
-//void AdditiveComponent::buttonClicked(juce::Button* button)
+//void AdditiveComponent::buttonClicked(Button* button)
 //{
 //    additiveListener->onOnOffAddChange(button->getToggleState());
 //}

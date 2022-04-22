@@ -1,16 +1,14 @@
 /*
   ==============================================================================
 
-    MainComponent.h
-    Created: 9 Nov 2020 11:22:48pm
-    Author:  Robin Otterbein
+	MainComponent.h
+	Created: 9 Nov 2020 11:22:48pm
+	Author:  Robin Otterbein
 
   ==============================================================================
 */
-
 #pragma once
 
-#include <JuceHeader.h>
 #include "InputComponent.h"
 #include "ModelComponent.h"
 #include "AdditiveComponent.h"
@@ -20,31 +18,28 @@
 #include "SpectogramComponent.h"
 #include "OutputComponent.h"
 
-//==============================================================================
-/*
-*/
-class MainComponent  : public juce::Component
+
+class MainComponent : public Component
 {
 public:
-    MainComponent(juce::AudioProcessorValueTreeState&, juce::AudioProcessorValueTreeState&);
-    ~MainComponent() override;
+	MainComponent( AudioProcessorValueTreeState&, AudioProcessorValueTreeState& );
+	~MainComponent() override = default;
 
-    void paint (juce::Graphics&) override;
-    void resized() override;
-    
-    //===============================================================================
-    void drawNextLineOfSpectrogram(int fftSize, float* fftData, juce::dsp::FFT& forwardFFT, int fftOrder);
+	void paint( Graphics& ) override;
+	void resized() override;
+
+	InputComponent inputComponent;
+	ModelComponent modelComponent;
+	OutputComponent outputComponent;
+
+	AdditiveComponent additiveComponent;
+	SubtractiveComponent subtractiveComponent;
+	SpectogramComponent spectogramComponent;
+
+	// WIP
+	//ModulationComponent modulationComponent;
+	//ReverbComponent reverbComponent;
 
 private:
-    
-    InputComponent inputComponent;
-    ModelComponent modelComponent;
-    AdditiveComponent additiveComponent;
-    SubtractiveComponent subtractiveComponent;
-    ModulationComponent modulationComponent;
-    ReverbComponent reverbComponent;
-    SpectogramComponent spectogramComponent;
-    OutputComponent outputComponent;
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR( MainComponent )
 };

@@ -1,63 +1,42 @@
 /*
   ==============================================================================
 
-    ModelComponent.h
-    Created: 7 Nov 2020 1:55:54am
-    Author:  Robin Otterbein
+	ModelComponent.h
+	Created: 7 Nov 2020 1:55:54am
+	Author:  Robin Otterbein
 
   ==============================================================================
 */
-
 #pragma once
 
-#include <JuceHeader.h>
+#include "DDSP_UI.h"
 
-//==============================================================================
-/*
-*/
-class ModelComponent  : public juce::Component
+
+class ModelComponent : public Component
 {
 public:
-    ModelComponent(juce::AudioProcessorValueTreeState&);
-    ~ModelComponent() override;
+	ModelComponent(AudioProcessorValueTreeState&);
+	~ModelComponent() override = default;
 
-    void paint (juce::Graphics&) override;
-    void resized() override;
-    
-    void updateModelState(juce::Button* button);
+	void paint (Graphics&) override;
+	void resized() override;
+	
+	void updateModelState(Button* button);
 
 private:
-    juce::AudioProcessorValueTreeState& valueTreeState;
-	typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
+	AudioProcessorValueTreeState& tree;
 
-    juce::ImageButton onoffButton;
-    juce::Label nameLabel;
-    juce::Label onoffLabel;
+	DDSPLabel nameLabel { "MODEL", 17.0f };
 
-    juce::ImageButton violinButton;
-    juce::Label violinLabel;
-	std::unique_ptr<ButtonAttachment> violinAttachment;
+	ImageButton onoffButton;
+	Label onoffLabel { "BLAHHAH", "BLAHAHAHA" };
 
-    juce::ImageButton fluteButton;
-    juce::Label fluteLabel;
-	std::unique_ptr<ButtonAttachment> fluteAttachment;
+	AttachedCombo modelCombo;
 
-    juce::ImageButton saxophoneButton;
-    juce::Label saxophoneLabel;
-	std::unique_ptr<ButtonAttachment> saxophoneAttachment;
+	//ImageButton violinButton { "Violin" };
+	//ImageButton fluteButton { "Flute" };
+	//ImageButton saxophoneButton { "Saxophone" };
+	//ImageButton trumpetButton { "Trumpet" };
 
-    juce::ImageButton trumpetButton;
-    juce::Label trumpetLabel;
-	std::unique_ptr<ButtonAttachment> trumpetAttachment;
-
-    juce::ImageButton extra1Button;
-    juce::Label extra1Label;
-    juce::ImageButton extra2Button;
-    juce::Label extra2Label;
-    juce::ImageButton extra3Button;
-    juce::Label extra3Label;
-    juce::ImageButton extra4Button;
-    juce::Label extra4Label;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModelComponent)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModelComponent)
 };

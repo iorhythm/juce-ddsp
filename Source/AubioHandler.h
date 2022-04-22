@@ -36,7 +36,8 @@ public:
 
     void prepare(const char_t* method, uint_t bufsize, uint_t hopsize, uint_t sampleRate);
     void releaseResources();
-    AubioResults process(juce::AudioBuffer<float>& buffer);
+    AubioResults process(
+    AudioBuffer<float>& buffer);
     uint_t setTolerance(smpl_t tol);
     uint_t setSilence(smpl_t sil);
 
@@ -44,7 +45,7 @@ private:
     AubioHandler();
     ~AubioHandler();
 
-    juce::DynamicLibrary abLibrary;
+    DynamicLibrary abLibrary;
 
 	struct PitchDeleter
 	{

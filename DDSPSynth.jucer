@@ -4,9 +4,60 @@
               displaySplashScreen="1" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               pluginChannelConfigs="{1, 2}" pluginFormats="buildStandalone,buildVST3"
               pluginManufacturer="SMC704" aaxIdentifier="com.SMC704.DDSPSynth"
-              bundleIdentifier="com.SMC704.DDSPSynth">
+              bundleIdentifier="com.SMC704.DDSPSynth" cppLanguageStandard="17">
   <MAINGROUP id="wP40jo" name="DDSPSynth">
     <GROUP id="{21B404C6-B1A3-96E0-24F7-18E3D850093A}" name="Source">
+      <GROUP id="{4538959A-CEF8-D0C3-7000-273B75ABE4C1}" name="UI">
+        <FILE id="IQQWkT" name="AdditiveComponent.cpp" compile="1" resource="0"
+              file="Source/AdditiveComponent.cpp"/>
+        <FILE id="ypukOM" name="AdditiveComponent.h" compile="0" resource="0"
+              file="Source/AdditiveComponent.h"/>
+        <FILE id="LmvF4T" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/CustomLookAndFeel.cpp"/>
+        <FILE id="zAHJDi" name="CustomLookAndFeel.h" compile="0" resource="0"
+              file="Source/CustomLookAndFeel.h"/>
+        <FILE id="g81LWP" name="DDSP_UI.cpp" compile="1" resource="0" file="Source/DDSP_UI.cpp"/>
+        <FILE id="Mnnyck" name="DDSP_UI.h" compile="0" resource="0" file="Source/DDSP_UI.h"/>
+        <FILE id="gAk87t" name="HarmonicEditor.cpp" compile="1" resource="0"
+              file="Source/HarmonicEditor.cpp"/>
+        <FILE id="XzG1Y9" name="HarmonicEditor.h" compile="0" resource="0"
+              file="Source/HarmonicEditor.h"/>
+        <FILE id="IvGhuu" name="HarmonicSlider.cpp" compile="1" resource="0"
+              file="Source/HarmonicSlider.cpp"/>
+        <FILE id="w8qR97" name="HarmonicSlider.h" compile="0" resource="0"
+              file="Source/HarmonicSlider.h"/>
+        <FILE id="EpZI9R" name="InputComponent.cpp" compile="1" resource="0"
+              file="Source/InputComponent.cpp"/>
+        <FILE id="vEnkzA" name="InputComponent.h" compile="0" resource="0"
+              file="Source/InputComponent.h"/>
+        <FILE id="WuMkzW" name="MainComponent.cpp" compile="1" resource="0"
+              file="Source/MainComponent.cpp"/>
+        <FILE id="CzeNvu" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+        <FILE id="vauVFV" name="ModelComponent.cpp" compile="1" resource="0"
+              file="Source/ModelComponent.cpp"/>
+        <FILE id="P0kVYP" name="ModelComponent.h" compile="0" resource="0"
+              file="Source/ModelComponent.h"/>
+        <FILE id="mOoA9d" name="ModulationComponent.cpp" compile="1" resource="0"
+              file="Source/ModulationComponent.cpp"/>
+        <FILE id="Gj3KN8" name="ModulationComponent.h" compile="0" resource="0"
+              file="Source/ModulationComponent.h"/>
+        <FILE id="HjBbKm" name="OutputComponent.cpp" compile="1" resource="0"
+              file="Source/OutputComponent.cpp"/>
+        <FILE id="KKz0y1" name="OutputComponent.h" compile="0" resource="0"
+              file="Source/OutputComponent.h"/>
+        <FILE id="tRFBY6" name="ReverbComponent.cpp" compile="1" resource="0"
+              file="Source/ReverbComponent.cpp"/>
+        <FILE id="JRmNRQ" name="ReverbComponent.h" compile="0" resource="0"
+              file="Source/ReverbComponent.h"/>
+        <FILE id="ZC8aIi" name="SpectogramComponent.cpp" compile="1" resource="0"
+              file="Source/SpectogramComponent.cpp"/>
+        <FILE id="Bu3bfC" name="SpectogramComponent.h" compile="0" resource="0"
+              file="Source/SpectogramComponent.h"/>
+        <FILE id="F5kMmB" name="SubtractiveComponent.cpp" compile="1" resource="0"
+              file="Source/SubtractiveComponent.cpp"/>
+        <FILE id="GYlpG0" name="SubtractiveComponent.h" compile="0" resource="0"
+              file="Source/SubtractiveComponent.h"/>
+      </GROUP>
       <GROUP id="{EC1CE48D-AFDF-312B-B94A-6D056A9FE965}" name="DDSP">
         <FILE id="uTrHom" name="fftshift.cpp" compile="1" resource="0" file="Source/codegen/fftshift.cpp"/>
         <FILE id="KMPRVN" name="AubioHandler.cpp" compile="1" resource="0"
@@ -111,60 +162,13 @@
         <FILE id="xYI3Li" name="subtractive.h" compile="0" resource="0" file="Source/codegen/subtractive.h"/>
         <FILE id="FP0Ikj" name="tmwtypes.h" compile="0" resource="0" file="Source/codegen/tmwtypes.h"/>
       </GROUP>
+      <FILE id="yjxycp" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Xrk64D" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="f6vy2M" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="UoMyoT" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="yjxycp" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="Xrk64D" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="WuMkzW" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
-      <FILE id="CzeNvu" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="EpZI9R" name="InputComponent.cpp" compile="1" resource="0"
-            file="Source/InputComponent.cpp"/>
-      <FILE id="vEnkzA" name="InputComponent.h" compile="0" resource="0"
-            file="Source/InputComponent.h"/>
-      <FILE id="vauVFV" name="ModelComponent.cpp" compile="1" resource="0"
-            file="Source/ModelComponent.cpp"/>
-      <FILE id="P0kVYP" name="ModelComponent.h" compile="0" resource="0"
-            file="Source/ModelComponent.h"/>
-      <FILE id="mOoA9d" name="ModulationComponent.cpp" compile="1" resource="0"
-            file="Source/ModulationComponent.cpp"/>
-      <FILE id="Gj3KN8" name="ModulationComponent.h" compile="0" resource="0"
-            file="Source/ModulationComponent.h"/>
-      <FILE id="IQQWkT" name="AdditiveComponent.cpp" compile="1" resource="0"
-            file="Source/AdditiveComponent.cpp"/>
-      <FILE id="LmvF4T" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="Source/CustomLookAndFeel.cpp"/>
-      <FILE id="zAHJDi" name="CustomLookAndFeel.h" compile="0" resource="0"
-            file="Source/CustomLookAndFeel.h"/>
-      <FILE id="ypukOM" name="AdditiveComponent.h" compile="0" resource="0"
-            file="Source/AdditiveComponent.h"/>
-      <FILE id="F5kMmB" name="SubtractiveComponent.cpp" compile="1" resource="0"
-            file="Source/SubtractiveComponent.cpp"/>
-      <FILE id="GYlpG0" name="SubtractiveComponent.h" compile="0" resource="0"
-            file="Source/SubtractiveComponent.h"/>
-      <FILE id="tRFBY6" name="ReverbComponent.cpp" compile="1" resource="0"
-            file="Source/ReverbComponent.cpp"/>
-      <FILE id="JRmNRQ" name="ReverbComponent.h" compile="0" resource="0"
-            file="Source/ReverbComponent.h"/>
-      <FILE id="ZC8aIi" name="SpectogramComponent.cpp" compile="1" resource="0"
-            file="Source/SpectogramComponent.cpp"/>
-      <FILE id="Bu3bfC" name="SpectogramComponent.h" compile="0" resource="0"
-            file="Source/SpectogramComponent.h"/>
-      <FILE id="HjBbKm" name="OutputComponent.cpp" compile="1" resource="0"
-            file="Source/OutputComponent.cpp"/>
-      <FILE id="KKz0y1" name="OutputComponent.h" compile="0" resource="0"
-            file="Source/OutputComponent.h"/>
-      <FILE id="gAk87t" name="HarmonicEditor.cpp" compile="1" resource="0"
-            file="Source/HarmonicEditor.cpp"/>
-      <FILE id="XzG1Y9" name="HarmonicEditor.h" compile="0" resource="0"
-            file="Source/HarmonicEditor.h"/>
-      <FILE id="IvGhuu" name="HarmonicSlider.cpp" compile="1" resource="0"
-            file="Source/HarmonicSlider.cpp"/>
-      <FILE id="w8qR97" name="HarmonicSlider.h" compile="0" resource="0"
-            file="Source/HarmonicSlider.h"/>
     </GROUP>
     <GROUP id="{D8B71657-2B6B-68DF-F380-CA4760A753A4}" name="Resources">
       <FILE id="XlEtlt" name="switch_left.png" compile="0" resource="1" file="Resources/switch_left.png"/>

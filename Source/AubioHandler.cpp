@@ -12,11 +12,12 @@
 
 AubioHandler::AubioHandler()
 {
-    juce::File cwd = juce::File::getSpecialLocation(juce::File::currentApplicationFile).getParentDirectory();
+    
+    File cwd = File::getSpecialLocation(File::currentApplicationFile).getParentDirectory();
 #if JUCE_WINDOWS
     const char* libFileName = "libaubio-5.dll";
 
-    bool loaded = abLibrary.open(cwd.getFullPathName() + juce::File::getSeparatorString() + libFileName);
+    bool loaded = abLibrary.open(cwd.getFullPathName() + File::getSeparatorString() + libFileName);
 
     fpNewAubioPitch = (fptypeNewAubioPitch)abLibrary.getFunction("new_aubio_pitch");
     fpDelAubioPitch = (fptypeDelAubioPitch)abLibrary.getFunction("del_aubio_pitch");
@@ -48,7 +49,7 @@ void AubioHandler::releaseResources()
     aubioPitch.release();
 }
 
-AubioHandler::AubioResults AubioHandler::process(juce::AudioBuffer<float>& buffer)
+AubioHandler::AubioResults AubioHandler::process(AudioBuffer<float>& buffer)
 {
     fvec_t aubioInput;
     fvec_t aubioOutput;

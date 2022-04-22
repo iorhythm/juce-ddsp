@@ -1,52 +1,34 @@
 /*
   ==============================================================================
 
-    ModulationComponent.h
-    Created: 2 Dec 2020 2:55:18pm
-    Author:  Francesco Ganis
+	ModulationComponent.h
+	Created: 2 Dec 2020 2:55:18pm
+	Author:  Francesco Ganis
 
   ==============================================================================
 */
-
 #pragma once
 
-#include <JuceHeader.h>
+#include "DDSP_UI.h"
 
-//==============================================================================
 
-class ModulationComponent : public juce::Component
+class ModulationComponent : public Component
 {
 public:
-    ModulationComponent(juce::AudioProcessorValueTreeState&);
-    ~ModulationComponent() override;
+	ModulationComponent(AudioProcessorValueTreeState&);
+	~ModulationComponent() override = default;
 
-    void paint(juce::Graphics&) override;
-    void resized() override;
+	void paint(Graphics&) override;
+	void resized() override;
 
 private:
-    juce::AudioProcessorValueTreeState& valueTreeState;
+	DDSPLabel nameLabel { "MOD", 17.0f };
 
-    typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
-    typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+	AttachedLabelledImageButton onoffButton;
 
-    juce::ImageButton onoffButton;
-    std::unique_ptr<ButtonAttachment> onoffAttachment;
+	AttachedLabelledRotarySlider amountSlider;
+	AttachedLabelledRotarySlider rateSlider;
+	AttachedLabelledRotarySlider delaySlider;
 
-    juce::Label nameLabel;
-    juce::Label onoffLabel;
-    juce::Slider amountSlider;
-    juce::Label amountLabel;
-    std::unique_ptr <SliderAttachment> amountAttachment;
-
-    juce::Slider rateSlider;
-    juce::Label rateLabel;
-    std::unique_ptr <SliderAttachment> rateAttachment;
-
-    juce::Slider delaySlider;
-    juce::Label delayLabel;
-    std::unique_ptr <SliderAttachment> delayAttachment;
-
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulationComponent)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulationComponent)
 };
-

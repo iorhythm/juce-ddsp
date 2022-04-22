@@ -1,20 +1,10 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "HarmonicEditor.h"
 #include "codegen/additive.h"
 #include "codegen/subtractive.h"
 #include "codegen/getPitch.h"
 #include "codegen/compute_loudness.h"
 #include "codegen/scale_f0.h"
-#include "TensorflowHandler.h"
 
 
 // ........ don't ask
@@ -22,484 +12,503 @@ FILE _iob[] = { *stdin, *stdout, *stderr };
 
 extern "C" FILE * __cdecl __iob_func(void)
 {
-    return _iob;
+	return _iob;
 }
 
 extern "C" int __cdecl __ms_vsnprintf(char* s, size_t n, const char* format, va_list arg)
 {
-    //return printf(s, n, format, arg);
-    printf(s, format);
-    return 0;
+	//return printf(s, n, format, arg);
+	printf(s, format);
+	return 0;
 }
 
 //==============================================================================
-DdspsynthAudioProcessor::DdspsynthAudioProcessor()
+DdspsynthAudioProcessor::DdspsynthAudioProcessor() :
 #ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor(BusesProperties()
+	AudioProcessor(BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-        .withInput("Input", juce::AudioChannelSet::mono(), true)
+		.withInput("Input", AudioChannelSet::mono(), true)
 #endif
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+		.withOutput("Output", AudioChannelSet::stereo(), true)
 #endif
-    ),
-
+	),
 #endif
-    : forwardFFT(fftOrder),
-    synthParameters(*this, nullptr, juce::Identifier("DDSPSynth"),
-        {
-            // Input
-           std::make_unique<juce::AudioParameterBool>("inputIsLine", "Input is line in", false),
-           // Additive
-           std::make_unique<juce::AudioParameterBool>("additiveOn", "Additive synth on", true),
-           std::make_unique<juce::AudioParameterFloat>("additiveShift", "Shift amount", -12.0f, 12.0f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("additiveStretch", "Stretch amount", -1.0f, 1.0f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("additiveGain", "Additive gain", -12.0f, 6.0f, 0.0f),
-           // Subtractive
-           std::make_unique<juce::AudioParameterBool>("noiseOn", "Noise synth on", true),
-           std::make_unique<juce::AudioParameterFloat>("noiseColor", "Noise color", -1.0f, 1.0f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("noiseGain", "Noise gain", -12.0f, 6.0f, 0.0f),
-           // Modulation
-           std::make_unique<juce::AudioParameterBool>("modulationOn", "Modulation on", false),
-           std::make_unique<juce::AudioParameterFloat>("modulationRate", "Rate", 0.0f, 10.0f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("modulationDelay", "Delay", 0.01f, 0.5f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("modulationAmount", "Amount", 0.0f, 100.0f, 0.0f),
-           // Reverb
-           std::make_unique<juce::AudioParameterBool>("reverbOn", "Reverb on", false),
-           std::make_unique<juce::AudioParameterFloat>("reverbMix", "Mix", 0.0f, 10.0f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("reverbSize", "Size", 0.10f, 2.0f, 0.0f),
-           std::make_unique<juce::AudioParameterFloat>("reverbGlow", "Glow", 0.0f, 100.0f, 0.0f),
-           // Output
-           std::make_unique<juce::AudioParameterFloat>("outputGain", "Output gain", -12.0f, 6.0f, 0.0f),
-           // Midi
-           std::make_unique<juce::AudioParameterFloat>("attack", "Attack", 0.0f, 2.0f, 0.1f),
-           std::make_unique<juce::AudioParameterFloat>("decay", "Decay", 0.0f, 2.0f, 0.1f),
-           std::make_unique<juce::AudioParameterFloat>("sustain", "Sustain", 0.0f, 1.0f, 0.1f),
-           std::make_unique<juce::AudioParameterFloat>("release", "Release", 0.0f, 2.0f, 0.1f),
-        }),
-    modelParameters(*this, nullptr, juce::Identifier("DDSPModels"),
-        {
-            // Model
-            std::make_unique<juce::AudioParameterBool>("modelOn", "Use model", false),
-            std::make_unique<juce::AudioParameterChoice>("modelSelect", "Model select", juce::StringArray({ "violin", "flute", "tenorsax", "trumpet" }), 0),
-        })
+	forwardFFT(fftOrder),
+	synthParameters(*this, nullptr, Identifier("DDSPSynth"), createParameterLayout() ),
+	modelParameters(*this, nullptr, Identifier("DDSPModels"), createModelParameterLayout() )
 {
-    modelDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile).getParentDirectory().getChildFile("Models");
-    jassert(modelDir.exists()); // Check that the Models folder exists in the same path as the plugin
+	modelDir = File::getSpecialLocation(File::SpecialLocationType::currentApplicationFile).getParentDirectory().getChildFile("Models");
+	jassert(modelDir.exists()); // Check that the Models folder exists in the same path as the plugin
 
-    inputSelectParameter = synthParameters.getRawParameterValue("inputIsLine");
+	inputSelectParameter = synthParameters.getRawParameterValue("inputIsLine");
 
-    additiveOnParameter = synthParameters.getRawParameterValue("additiveOn");
-    additiveShiftParameter = synthParameters.getRawParameterValue("additiveShift");
-    additiveStretchParameter = synthParameters.getRawParameterValue("additiveStretch");
-    additiveGainParameter = synthParameters.getRawParameterValue("additiveGain");
-    noiseOnParameter = synthParameters.getRawParameterValue("noiseOn");
-    noiseColorParameter = synthParameters.getRawParameterValue("noiseColor");
-    noiseGainParameter = synthParameters.getRawParameterValue("noiseGain");
-    modulationOnParameter = synthParameters.getRawParameterValue("modulationOn");
-    modulationRateParameter = synthParameters.getRawParameterValue("modulationRate");
-    modulationDelayParameter = synthParameters.getRawParameterValue("modulationDelay");
-    modulationAmountParameter = synthParameters.getRawParameterValue("modulationAmount");
-    reverbOnParameter = synthParameters.getRawParameterValue("reverbOn");
-    reverbMixParameter = synthParameters.getRawParameterValue("reverbMix");
-    reverbSizeParameter = synthParameters.getRawParameterValue("reverbSize");
-    reverbGlowParameter = synthParameters.getRawParameterValue("reverbGlow");
-    outputGainParameter = synthParameters.getRawParameterValue("outputGain");
-    attackParameter = synthParameters.getRawParameterValue("attack");
-    decayParameter = synthParameters.getRawParameterValue("decay");
-    sustainParameter = synthParameters.getRawParameterValue("sustain");
-    releaseParameter = synthParameters.getRawParameterValue("release");
+	additiveOnParameter = synthParameters.getRawParameterValue("additiveOn");
+	additiveShiftParameter = synthParameters.getRawParameterValue("additiveShift");
+	additiveStretchParameter = synthParameters.getRawParameterValue("additiveStretch");
+	additiveGainParameter = synthParameters.getRawParameterValue("additiveGain");
+	noiseOnParameter = synthParameters.getRawParameterValue("noiseOn");
+	noiseColorParameter = synthParameters.getRawParameterValue("noiseColor");
+	noiseGainParameter = synthParameters.getRawParameterValue("noiseGain");
+	modulationOnParameter = synthParameters.getRawParameterValue("modulationOn");
+	modulationRateParameter = synthParameters.getRawParameterValue("modulationRate");
+	modulationDelayParameter = synthParameters.getRawParameterValue("modulationDelay");
+	modulationAmountParameter = synthParameters.getRawParameterValue("modulationAmount");
+	reverbOnParameter = synthParameters.getRawParameterValue("reverbOn");
+	reverbMixParameter = synthParameters.getRawParameterValue("reverbMix");
+	reverbSizeParameter = synthParameters.getRawParameterValue("reverbSize");
+	reverbGlowParameter = synthParameters.getRawParameterValue("reverbGlow");
+	outputGainParameter = synthParameters.getRawParameterValue("outputGain");
+	attackParameter = synthParameters.getRawParameterValue("attack");
+	decayParameter = synthParameters.getRawParameterValue("decay");
+	sustainParameter = synthParameters.getRawParameterValue("sustain");
+	releaseParameter = synthParameters.getRawParameterValue("release");
 
-    modelOnParameter = modelParameters.getRawParameterValue("modelOn");
-    modelChoiceParameter = modelParameters.getRawParameterValue("modelSelect");
+	modelOnParameter = modelParameters.getRawParameterValue("modelOn");
+	modelChoiceParameter = modelParameters.getRawParameterValue("modelSelect");
 
-    modelParameters.addParameterListener("modelSelect", this);
-    modelParameters.addParameterListener("modelOn", this);
+	modelParameters.addParameterListener("modelSelect", this);
+	modelParameters.addParameterListener("modelOn", this);
 
-    for (int i = 0; i < 65; i++) {
-        magnitudes[i] = 6;
-    }
-    for (int i = 0; i < 4096; i++) {
-        amplitudes[i] = 0;
-        f0[i] = 0;
-    }
-    for (int i = 0; i < max_n_harmonics; i++) {
-        harmonics[i] = 0.0;
-    }
+	for (int i = 0; i < 65; i++) {
+		magnitudes[i] = 6;
+	}
 
-    tf_amps = -120;
-    tf_f0 = 0;
+	for (int i = 0; i < maxAmplitudes; i++) {
+		amplitudes[i] = 0;
+		f0[i] = 0;
+	}
+
+	for (int i = 0; i < max_n_harmonics; i++) {
+		harmonics[i] = 0.0;
+	}
+
+	tf_amps = -120;
+	tf_f0 = 0;
 }
+
 
 DdspsynthAudioProcessor::~DdspsynthAudioProcessor()
 {
-    tfHandler.stopThread(100);
+	tfHandler.stopThread(100);
 }
 
 //==============================================================================
-const juce::String DdspsynthAudioProcessor::getName() const
+const String DdspsynthAudioProcessor::getName() const
 {
-    return JucePlugin_Name;
+	return JucePlugin_Name;
 }
 
 bool DdspsynthAudioProcessor::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
-    return true;
+	return true;
 #else
-    return false;
+	return false;
 #endif
 }
 
 bool DdspsynthAudioProcessor::producesMidi() const
 {
 #if JucePlugin_ProducesMidiOutput
-    return true;
+	return true;
 #else
-    return false;
+	return false;
 #endif
 }
 
 bool DdspsynthAudioProcessor::isMidiEffect() const
 {
 #if JucePlugin_IsMidiEffect
-    return true;
+	return true;
 #else
-    return false;
+	return false;
 #endif
 }
 
 double DdspsynthAudioProcessor::getTailLengthSeconds() const
 {
-    return 0.0;
+	return 0.0;
 }
 
 int DdspsynthAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+	return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
+				// so this should be at least 1, even if you're not really implementing programs.
 }
 
 int DdspsynthAudioProcessor::getCurrentProgram()
 {
-    return 0;
+	return 0;
 }
 
 void DdspsynthAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-const juce::String DdspsynthAudioProcessor::getProgramName(int index)
+const String DdspsynthAudioProcessor::getProgramName(int index)
 {
-    return {};
+	return {};
 }
 
-void DdspsynthAudioProcessor::changeProgramName(int index, const juce::String& newName)
+void DdspsynthAudioProcessor::changeProgramName(int index, const String& newName)
 {
 }
 
 //==============================================================================
 void DdspsynthAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    tfHandler.setAsyncUpdater(this);
-    auto param = (juce::AudioParameterChoice*) modelParameters.getParameter("modelSelect");
-    juce::String modelName = param->getCurrentChoiceName();
-    juce::String modelPath = modelDir.getChildFile(modelName).getFullPathName();
-    parseModelConfigJSON(modelPath);
-    tfHandler.loadModel(modelPath.getCharPointer());
+	tfHandler.setAsyncUpdater(this);
+	auto param = (AudioParameterChoice*) modelParameters.getParameter("modelSelect");
+	String modelName = param->getCurrentChoiceName();
+	String modelPath = modelDir.getChildFile(modelName).getFullPathName();
+	parseModelConfigJSON(modelPath);
+	tfHandler.loadModel(modelPath.getCharPointer());
 
-    adsr.setSampleRate(sampleRate);
-    adsr.setParameters(adsrParams);
-    adsr.reset();
+	adsr.setSampleRate(sampleRate);
+	adsr.setParameters(adsrParams);
+	adsr.reset();
 
-    abHandler.prepare("yinfft", 4096, samplesPerBlock, (uint_t)sampleRate);
-    abHandler.setTolerance(0.8);
+	abHandler.prepare("yinfft", maxAmplitudes, samplesPerBlock, (uint_t)sampleRate);
+	abHandler.setTolerance(0.8);
 
-    abHandler.setSilence(-50);
+	abHandler.setSilence(-50);
 }
 
 void DdspsynthAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
-    abHandler.releaseResources();
+	// When playback stops, you can use this as an opportunity to free up any
+	// spare memory, etc.
+	abHandler.releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool DdspsynthAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
 #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused(layouts);
-    return true;
+	ignoreUnused(layouts);
+	return true;
 #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-        return false;
+	// This is the place where you check if the layout is supported.
+	// In this template code we only support mono or stereo.
+	if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
+		&& layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+		return false;
 
-    // This checks if the input layout matches the output layout
+	// This checks if the input layout matches the output layout
    //#if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-    //#endif
+	if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+		return false;
+	//#endif
 
-    return true;
+	return true;
 #endif
 }
 #endif
 
-void DdspsynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void DdspsynthAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
-    shouldSynthesize = true;
-    const float* in_l = buffer.getReadPointer(0);
-    numSamples = buffer.getNumSamples();
-    if (*inputSelectParameter) //Input is line-in
-    {
-        AubioHandler::AubioResults aubioResults = abHandler.process(buffer);
-        double mlInput[4096];
-        for (int i = 0; i < 4096; i++)
-        {
-            if (i < numSamples)
-                mlInput[i] = in_l[i];
-            else
-                mlInput[i] = 0;
-        }
+	shouldSynthesize = true;
+	const float* in_l = buffer.getReadPointer(0);
+	numSamples = buffer.getNumSamples();
 
-        //tf_amps = compute_loudness((double)numSamples, mlInput, getSampleRate());
-        tf_amps = aubioResults.loudness;
-        DBG(aubioResults.confidence);
-        f0_in = aubioResults.pitch;
-        tf_f0 = f0_in;
-        for (int i = 0; i < 4096; i++)
-        {
-            f0[i] = f0_in;
-        }
-    }
-    else //Input is midi
-    {
-        buffer.clear();
-        adsrParams = { *attackParameter, *decayParameter, *sustainParameter, *releaseParameter };
-        adsr.setParameters(adsrParams);
-        int time;
-        juce::MidiMessage m;
-        for (juce::MidiBuffer::Iterator i(midiMessages); i.getNextEvent(m, time);)
-        {
-            if (m.isNoteOn())
-            {
-                adsr.reset();
-                adsr.noteOn();
-                midiVelocity = m.getFloatVelocity();
-                currentMidiNote = m.getNoteNumber();
-                midiNoteHz = m.getMidiNoteInHertz(currentMidiNote);
-                tf_amps = -120;
-                tf_f0 = midiNoteHz;
-            }
-            else if (m.isNoteOff())
-            {
-                if (m.getNoteNumber() == currentMidiNote)
-                    adsr.noteOff();
-            }
-        }
-        if (!adsr.isActive()) 
-            shouldSynthesize = false;
+	if (*inputSelectParameter) //Input is line-in
+	{
+		AubioHandler::AubioResults aubioResults = abHandler.process(buffer);
+		double mlInput[maxAmplitudes];
+		for (int i = 0; i < maxAmplitudes; i++)
+		{
+			if (i < numSamples)
+				mlInput[i] = in_l[i];
+			else
+				mlInput[i] = 0;
+		}
 
-        for (int i = 0; i < numSamples && adsr.isActive(); i++)
-        {
-            f0[i] = midiNoteHz;
-        }
-        for (int i = 0; i < numSamples-1 && adsr.isActive(); i++)
-        {
-            adsrVelocity = adsr.getNextSample();
-        }
-        tf_f0 = midiNoteHz;
-        tf_amps = log10(juce::jmax(midiVelocity * adsrVelocity, 0.000001f)) * 20.0f;
-    }
+		//tf_amps = compute_loudness((double)numSamples, mlInput, getSampleRate());
+		tf_amps = aubioResults.loudness;
+		DBG(aubioResults.confidence);
+		f0_in = aubioResults.pitch;
+		tf_f0 = f0_in;
+		for (int i = 0; i < maxAmplitudes; i++)
+		{
+			f0[i] = f0_in;
+		}
+	}
+	else //Input is midi
+	{
+		buffer.clear();
+		adsrParams = { *attackParameter, *decayParameter, *sustainParameter, *releaseParameter };
+		adsr.setParameters(adsrParams);
+		int time;
+		MidiMessage m;
+		for (MidiBuffer::Iterator i(midiMessages); i.getNextEvent(m, time);)
+		{
+			if (m.isNoteOn())
+			{
+				adsr.reset();
+				adsr.noteOn();
+				midiVelocity = m.getFloatVelocity();
+				currentMidiNote = m.getNoteNumber();
+				midiNoteHz = m.getMidiNoteInHertz(currentMidiNote);
+				tf_amps = -120;
+				tf_f0 = midiNoteHz;
+			}
+			else if (m.isNoteOff())
+			{
+				if (m.getNoteNumber() == currentMidiNote)
+					adsr.noteOff();
+			}
+		}
+		if (!adsr.isActive()) 
+			shouldSynthesize = false;
 
-
-    if (*modelOnParameter) {
-        if (!tfHandler.isThreadRunning())
-        {
-            tfHandler.setInputs(tf_f0, tf_amps);
-            tfHandler.startThread();
-        }
-    }
-
-    double harms_copy[max_n_harmonics];
-    double mags_copy[65];
-    double amps_copy[4096];
-    for (int i = 0; i < n_harmonics; i++) {
-        if (*modelOnParameter)
-            harms_copy[i] = harmonics[i] * (1 - userHarmonics[i]) * 2;
-        else
-            harms_copy[i] = 10 * (1 - userHarmonics[i]) - 5;
-    }
-    for (int i = 0; i < 65; i++) {
-        mags_copy[i] = magnitudes[i];
-    }
-    for (int i = 0; i < 4096; i++) {
-        if (*modelOnParameter)
-            amps_copy[i] = amplitudes[i];
-        else
-            amps_copy[i] = midiVelocity * adsrVelocity;
-    }
-
-    if (*additiveOnParameter && shouldSynthesize) {
-        additive((double)numSamples, getSampleRate(), amps_copy, n_harmonics, harms_copy, f0, phaseBuffer_in, (double)*additiveShiftParameter, (double)*additiveStretchParameter, addBuffer, phaseBuffer_out);
-    }
-    else {
-        for (int i = 0; i < 4096; i++)
-        {
-            addBuffer[i] = 0;
-        }
-    }
+		for (int i = 0; i < numSamples && adsr.isActive(); i++)
+		{
+			f0[i] = midiNoteHz;
+		}
+		for (int i = 0; i < numSamples-1 && adsr.isActive(); i++)
+		{
+			adsrVelocity = adsr.getNextSample();
+		}
+		tf_f0 = midiNoteHz;
+		tf_amps = log10(jmax(midiVelocity * adsrVelocity, 0.000001f)) * 20.0f;
+	}
 
 
-    if (*noiseOnParameter && shouldSynthesize)
-    {
-        subtractive(numSamples, mags_copy, (double)*noiseColorParameter, initial_bias, subBuffer);
-    }
-    else {
-        for (int i = 0; i < 4096; i++)
-        {
-            subBuffer[i] = 0;
-        }
-    }
-    for (int i = 0; i < max_n_harmonics; ++i) {
-        phaseBuffer_in[i] = phaseBuffer_out[i];
-    }
+	if (*modelOnParameter) {
+		if (!tfHandler.isThreadRunning())
+		{
+			tfHandler.setInputs(tf_f0, tf_amps);
+			tfHandler.startThread();
+		}
+	}
 
-    auto outL = buffer.getWritePointer(0);
-    auto outR = buffer.getWritePointer(1);
+	double harms_copy[max_n_harmonics];
+	double mags_copy[65];
+	double amps_copy[maxAmplitudes];
+	for (int i = 0; i < n_harmonics; i++) {
+		if (*modelOnParameter)
+			harms_copy[i] = harmonics[i] * (1 - userHarmonics[i]) * 2;
+		else
+			harms_copy[i] = 10 * (1 - userHarmonics[i]) - 5;
+	}
+	for (int i = 0; i < 65; i++) {
+		mags_copy[i] = magnitudes[i];
+	}
+	for (int i = 0; i < maxAmplitudes; i++) {
+		if (*modelOnParameter)
+			amps_copy[i] = amplitudes[i];
+		else
+			amps_copy[i] = midiVelocity * adsrVelocity;
+	}
 
-    for (int i = 0; i < buffer.getNumSamples(); i++) {
-        float additiveGain = pow(10.0f, (*additiveGainParameter / 20));
-        float noiseGain = pow(10.0f, (*noiseGainParameter / 20));
-        float outGain = pow(10.0f, (*outputGainParameter / 20));
+	if (*additiveOnParameter && shouldSynthesize) {
+		additive((double)numSamples, getSampleRate(), amps_copy, n_harmonics, harms_copy, f0, phaseBuffer_in, (double)*additiveShiftParameter, (double)*additiveStretchParameter, addBuffer, phaseBuffer_out);
+	}
+	else {
+		for (int i = 0; i < maxAmplitudes; i++)
+		{
+			addBuffer[i] = 0;
+		}
+	}
 
-        if (!(*modelOnParameter)) // workaround to prevent MIDI-related hearing damage
-            outGain *= 0.02;
 
-        float out = (addBuffer[i] * additiveGain + subBuffer[i] * noiseGain) * outGain;
-        pushNextSampleIntoFifo(out);
-        outL[i] = out;
-        outR[i] = out;
-    }
+	if (*noiseOnParameter && shouldSynthesize)
+	{
+		subtractive(numSamples, mags_copy, (double)*noiseColorParameter, initial_bias, subBuffer);
+	}
+	else {
+		for (int i = 0; i < maxAmplitudes; i++)
+		{
+			subBuffer[i] = 0;
+		}
+	}
+
+	for (int i = 0; i < max_n_harmonics; ++i) {
+		phaseBuffer_in[i] = phaseBuffer_out[i];
+	}
+
+	auto outL = buffer.getWritePointer(0);
+	auto outR = buffer.getWritePointer(1);
+
+	for (int i = 0; i < buffer.getNumSamples(); i++) {
+		float additiveGain = pow(10.0f, (*additiveGainParameter / 20));
+		float noiseGain = pow(10.0f, (*noiseGainParameter / 20));
+		float outGain = pow(10.0f, (*outputGainParameter / 20));
+
+		if (!(*modelOnParameter)) // workaround to prevent MIDI-related hearing damage
+			outGain *= 0.02;
+
+		float out = (addBuffer[i] * additiveGain + subBuffer[i] * noiseGain) * outGain;
+		pushNextSampleIntoFifo(out);
+		outL[i] = out;
+		outR[i] = out;
+	}
 }
 
-void DdspsynthAudioProcessor::parseModelConfigJSON(juce::String path)
+void DdspsynthAudioProcessor::parseModelConfigJSON(String path)
 {
-    // Parses config.json for model selected. Sets default values if file isn't found.
-    juce::File config_file = juce::File(path + "/config.json");
-    jassert(config_file.existsAsFile());
-    juce::var config = juce::JSON::parse(config_file);
-    n_harmonics = config.getProperty("n_harmonics", 50);
-    initial_bias = config.getProperty("initial_bias", -5.0f);
-    if(config.hasProperty("attack"))
-        *attackParameter = config.getProperty("attack", juce::var(*attackParameter));
-    if (config.hasProperty("decay"))
-        *decayParameter = config.getProperty("decay", juce::var(*decayParameter));
-    if (config.hasProperty("sustain"))
-        *sustainParameter = config.getProperty("sustain", juce::var(*sustainParameter));
-    if (config.hasProperty("release"))
-        *releaseParameter = config.getProperty("release", juce::var(*releaseParameter));
+	// Parses config.json for model selected. Sets default values if file isn't found.
+	File config_file = File(path + "/config.json");
+	jassert(config_file.existsAsFile());
+	var config = JSON::parse(config_file);
+	n_harmonics = config.getProperty("n_harmonics", 50);
+	initial_bias = config.getProperty("initial_bias", -5.0f);
+	if(config.hasProperty("attack"))
+		*attackParameter = config.getProperty("attack", var(*attackParameter));
+	if (config.hasProperty("decay"))
+		*decayParameter = config.getProperty("decay", var(*decayParameter));
+	if (config.hasProperty("sustain"))
+		*sustainParameter = config.getProperty("sustain", var(*sustainParameter));
+	if (config.hasProperty("release"))
+		*releaseParameter = config.getProperty("release", var(*releaseParameter));
 }
 
 void DdspsynthAudioProcessor::setModelOutput(TensorflowHandler::ModelResults tfResults)
 {
-    for (int i = 0; i < n_harmonics; i++) {
-        harmonics[i] = tfResults.harmonicDistribution[i];
-    }
-    for (int i = 0; i < 65; i++) {
-        magnitudes[i] = tfResults.noiseMagnitudes[i];
-    }
-    for (int i = 0; i < numSamples; i++) {
-        amplitudes[i] = (double)tfResults.amplitudes[0] + 1.0f;
-    }
+	for (int i = 0; i < n_harmonics; i++) {
+		harmonics[i] = tfResults.harmonicDistribution[i];
+	}
+	for (int i = 0; i < 65; i++) {
+		magnitudes[i] = tfResults.noiseMagnitudes[i];
+	}
+	for (int i = 0; i < numSamples; i++) {
+		amplitudes[i] = (double)tfResults.amplitudes[0] + 1.0f;
+	}
 }
 
 void DdspsynthAudioProcessor::onHarmonicsChange(double* newHarmonics, int nHarmonics)
 {
-    for (int i = 0; i < nHarmonics && i < n_harmonics; i++) {
-        userHarmonics[i] = newHarmonics[i];
-    }
+	for (int i = 0; i < nHarmonics && i < n_harmonics; i++) {
+		userHarmonics[i] = newHarmonics[i];
+	}
 }
 
 int DdspsynthAudioProcessor::getNumberOfHarmonics()
 {
-    return n_harmonics;
+	return n_harmonics;
 }
 
-void DdspsynthAudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
+void DdspsynthAudioProcessor::parameterChanged(const String& parameterID, float newValue)
 {
-    DBG(parameterID);
-    
-    if (parameterID == "modelSelect")
-    {
-        // getRawParameterValue is "not guaranteed" to contain up-to-date value
-        auto param = (juce::AudioParameterChoice*) modelParameters.getParameter("modelSelect");
-        juce::String modelName = param->getCurrentChoiceName();
-        DBG("Processor notified to select model " + modelName);
-        juce::String modelPath = modelDir.getChildFile(modelName).getFullPathName();
-        if (modelDir.getChildFile(modelName).exists()) 
-        {
-            parseModelConfigJSON(modelPath);
-            tfHandler.loadModel(modelPath.getCharPointer());
-        }
-        else
-        {
-            juce::AlertWindow::showMessageBoxAsync(juce::AlertWindow::AlertIconType::WarningIcon, "Model not found!", "The plugin expected to find the " + modelName + " model in this path:\n" + modelPath);
-        }
-    }
-    if (parameterID == "modelSelect" || parameterID == "modelOn")
-    {
-        if (hasEditor())
-        {
-            ((DdspsynthAudioProcessorEditor*)getActiveEditor())->resetParameters();
-        }
+	//DBG(parameterID);
+	
+	if (parameterID == "modelSelect")
+	{
+		// getRawParameterValue is "not guaranteed" to contain up-to-date value
+		auto param = (AudioParameterChoice*) modelParameters.getParameter("modelSelect");
+		String modelName = param->getCurrentChoiceName();
+		DBG("Processor notified to select model " + modelName);
+		String modelPath = modelDir.getChildFile(modelName).getFullPathName();
 
-        for (int i = 0; i < 65; i++) {
-            magnitudes[i] = 6;
-        }
-    }
+		if (modelDir.getChildFile(modelName).exists()) 
+		{
+			parseModelConfigJSON(modelPath);
+			tfHandler.loadModel(modelPath.getCharPointer());
+		}
+		else
+		{
+			AlertWindow::showMessageBoxAsync(AlertWindow::AlertIconType::WarningIcon, "Model not found!", "The plugin expected to find the " + modelName + " model in this path:\n" + modelPath);
+		}
+	}
+	if (parameterID == "modelSelect" || parameterID == "modelOn")
+	{
+		if (hasEditor())
+		{
+			((DdspsynthAudioProcessorEditor*)getActiveEditor())->resetParameters();
+		}
+
+		for (int i = 0; i < 65; i++) {
+			magnitudes[i] = 6.0;
+		}
+	}
 }
+
+AudioProcessorValueTreeState::ParameterLayout DdspsynthAudioProcessor::createParameterLayout()
+{
+	AudioProcessorValueTreeState::ParameterLayout layout;
+
+	// Input
+	layout.add( std::make_unique<AudioParameterChoice>( "inputIsLine", "Input Selector", StringArray{ "MIDI", "AUDIO IN" }, 0 ) );
+	// Additive
+	layout.add( std::make_unique<AudioParameterBool>( "additiveOn", "Additive synth on", true ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "additiveShift", "Shift amount", NormalisableRange< float >{ -12.0f, 12.0f, 0.1f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "additiveStretch", "Stretch amount", NormalisableRange< float >{-1.0f, 1.0f, 0.01f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "additiveGain", "Additive gain", NormalisableRange< float >{ -12.0f, 6.0f, 0.01f }, 0.0f ) );
+	// Subtractive
+	layout.add( std::make_unique<AudioParameterBool>( "noiseOn", "Noise synth on", true ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "noiseColor", "Noise color", NormalisableRange< float >{ -1.0f, 1.0f, 0.01f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "noiseGain", "Noise gain", -12.0f, 6.0f, 0.0f ) );
+	// Modulation
+	layout.add( std::make_unique<AudioParameterBool>( "modulationOn", "Modulation on", false ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "modulationRate", "Rate", NormalisableRange< float >{ 0.0f, 10.0f, 0.01f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "modulationDelay", "Delay", NormalisableRange< float >{ 0.01f, 0.5f, 0.01f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "modulationAmount", "Amount", NormalisableRange< float >{ 0.0f, 100.0f, 0.01f }, 0.0f ) );
+	// Reverb
+	layout.add( std::make_unique<AudioParameterBool>( "reverbOn", "Reverb on", false ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "reverbMix", "Mix", NormalisableRange< float >{ 0.0f, 10.0f, 0.01f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "reverbSize", "Size", NormalisableRange< float >{ 0.10f, 2.0f, 0.01f }, 0.0f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "reverbGlow", "Glow", NormalisableRange< float >{ 0.0f, 100.0f, 0.01f }, 0.0f ) );
+	// Output
+	layout.add( std::make_unique<AudioParameterFloat>( "outputGain", "Output gain", NormalisableRange< float >{ -12.0f, 6.0f, 0.01f }, 0.0f ) );
+	// Midi
+	layout.add( std::make_unique<AudioParameterFloat>( "attack", "Attack", NormalisableRange< float >{ 0.0f, 2.0f, 0.01f }, 0.1f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "decay", "Decay", NormalisableRange< float >{ 0.0f, 2.0f, 0.01f }, 0.1f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "sustain", "Sustain", NormalisableRange< float >{ 0.0f, 1.0f, 0.01f }, 0.1f ) );
+	layout.add( std::make_unique<AudioParameterFloat>( "release", "Release", NormalisableRange< float >{ 0.0f, 2.0f, 0.01f }, 0.1f ) );
+
+	return layout;
+}
+
+AudioProcessorValueTreeState::ParameterLayout DdspsynthAudioProcessor::createModelParameterLayout()
+{
+	AudioProcessorValueTreeState::ParameterLayout layout;
+
+	layout.add( std::make_unique<AudioParameterBool>( "modelOn", "Use model", true ) );
+	layout.add( std::make_unique<AudioParameterChoice>( "modelSelect", "Model select", StringArray( { "violin", "flute", "tenorsax", "trumpet" } ), 0 ) );
+
+	return layout;
+}
+
 
 void DdspsynthAudioProcessor::handleAsyncUpdate()
 {
-    setModelOutput(tfHandler.getOutputs());
+	setModelOutput(tfHandler.getOutputs());
 }
 
 
 //==============================================================================
 bool DdspsynthAudioProcessor::hasEditor() const
 {
-    return true; // (change this to false if you choose to not supply an editor)
+	return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* DdspsynthAudioProcessor::createEditor()
+AudioProcessorEditor* DdspsynthAudioProcessor::createEditor()
 {
-    return new DdspsynthAudioProcessorEditor(*this, synthParameters, modelParameters);
+	return new DdspsynthAudioProcessorEditor(*this, synthParameters, modelParameters);
 }
 
 //==============================================================================
-void DdspsynthAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+void DdspsynthAudioProcessor::getStateInformation(MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+	// You should use this method to store your parameters in the memory block.
+	// You could do that either as raw data, or use the XML or ValueTree classes
+	// as intermediaries to make it easy to save and load complex data.
 }
+
 
 void DdspsynthAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+	// You should use this method to restore your parameters from this memory block,
+	// whose contents will have been created by the getStateInformation() call.
 }
+
 
 //==============================================================================
 // This creates new instances of the plugin..
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new DdspsynthAudioProcessor();
+	return new DdspsynthAudioProcessor();
 }
 
 //===============================================================================
@@ -507,19 +516,19 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 void DdspsynthAudioProcessor::pushNextSampleIntoFifo(float sample) noexcept
 {
-    // if the fifo contains enough data, set a flag to say
-    // that the next line should now be rendered..
-    if (fifoIndex == fftSize)
-    {
-        if (!nextFFTBlockReady)
-        {
-            juce::zeromem(fftData, sizeof(fftData));
-            memcpy(fftData, fifo, sizeof(fifo));
-            nextFFTBlockReady = true;
-        }
+	// if the fifo contains enough data, set a flag to say
+	// that the next line should now be rendered..
+	if (fifoIndex == fftSize)
+	{
+		if (!nextFFTBlockReady)
+		{
+			zeromem(fftData, sizeof(fftData));
+			memcpy(fftData, fifo, sizeof(fifo));
+			nextFFTBlockReady = true;
+		}
 
-        fifoIndex = 0;
-    }
+		fifoIndex = 0;
+	}
 
-    fifo[fifoIndex++] = sample;
+	fifo[fifoIndex++] = sample;
 }

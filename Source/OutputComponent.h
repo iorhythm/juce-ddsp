@@ -1,50 +1,41 @@
 /*
   ==============================================================================
 
-    OutputComponent.h
-    Created: 7 Nov 2020 2:09:43am
-    Author:  Robin Otterbein
+	OutputComponent.h
+	Created: 7 Nov 2020 2:09:43am
+	Author:  Robin Otterbein
 
   ==============================================================================
 */
-
 #pragma once
 
-#include <JuceHeader.h>
+#include "DDSP_UI.h"
 
-//==============================================================================
-/*
-*/
-class OutputComponent  : public juce::Component/*, public juce::Slider::Listener*/
+
+class OutputComponent : public Component
 {
 public:
-    OutputComponent(juce::AudioProcessorValueTreeState&);
-    ~OutputComponent() override;
+	OutputComponent(AudioProcessorValueTreeState&);
+	~OutputComponent() override = default;
 
-    void paint (juce::Graphics&) override;
-    void resized() override;
-    
-    //void sliderValueChanged(juce::Slider* slider) override;
-    //
-    //struct OutputListener
-    //{
-    //    virtual void onOutAmpChange(double outAmp) = 0;
-    //};
+	void paint (Graphics&) override;
+	void resized() override;
+	
+	//void sliderValueChanged(Slider* slider) override;
+	//
+	//struct OutputListener
+	//{
+	//    virtual void onOutAmpChange(double outAmp) = 0;
+	//};
 
-    //void setOutputListener(OutputListener* outListener);
+	//void setOutputListener(OutputListener* outListener);
 
 private:
+	DDSPLabel nameLabel { "OUTPUT", 17.0f };
 
-    juce::AudioProcessorValueTreeState& valueTreeState;
+	AttachedLabelledSlider masterSlider;
+	
+	//OutputListener* outputListener = NULL;
 
-    typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
-
-    juce::Label nameLabel;
-    juce::Slider masterSlider;
-    juce::Label masterLabel;
-    std::unique_ptr <SliderAttachment> masterAttachment;
-    
-    //OutputListener* outputListener = NULL;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OutputComponent)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OutputComponent)
 };
