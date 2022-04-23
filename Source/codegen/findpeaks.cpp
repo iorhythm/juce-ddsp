@@ -9,11 +9,9 @@
 #include "findpeaks.h"
 
 
-// Function Definitions
 namespace coder
 {
-	void findpeaks( const ::coder::array<double, 1U>& Yin, ::coder::array<double,
-		1U>& Ypk, ::coder::array<double, 1U>& Xpk )
+	void findpeaks( const array<double, 1U>& Yin, array<double, 1U>& Ypk, array<double, 1U>& Xpk )
 	{
 		array<int, 2U> b_y;
 		array<unsigned int, 2U> y;

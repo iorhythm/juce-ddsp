@@ -13,7 +13,7 @@
 
 #include "rt_nonfinite.h"
 
-// Function Declarations
+
 namespace coder
 {
 	boolean_T iseven( double x );

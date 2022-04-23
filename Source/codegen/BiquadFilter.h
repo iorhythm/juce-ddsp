@@ -41,7 +41,9 @@ namespace coder::dspcodegen
 		void setupAndReset();
 		void matlabCodegenDestructor();
 		void release();
+
 		boolean_T matlabCodegenIsDeleted;
+
 	private:
 		int isInitialized;
 		boolean_T isSetupComplete;

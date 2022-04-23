@@ -13,136 +13,116 @@
 // Function Definitions
 namespace coder::dspcodegen
 {
-	void BiquadFilter::setupAndReset()
-	{
-		this->setup();
-
-		// System object Initialization function: dsp.BiquadFilter
-		for(int i = 0; i < 6; i++)
-		{
-			this->cSFunObject.W0_FILT_STATES[ i ] = this->cSFunObject.P0_ICRTP;
-		}
-	}
-
 	BiquadFilter::BiquadFilter()
 	{
-		this->matlabCodegenIsDeleted = true;
+		matlabCodegenIsDeleted = true;
 	}
 
 	BiquadFilter::~BiquadFilter()
 	{
-		this->matlabCodegenDestructor();
+		matlabCodegenDestructor();
 	}
 
 	BiquadFilter* BiquadFilter::init()
 	{
-		BiquadFilter* obj;
-		obj = this;
+		BiquadFilter* obj = this;
 		obj->isInitialized = 0;
 
 		// System object Constructor function: dsp.BiquadFilter
 		obj->cSFunObject.P0_ICRTP = 0.0;
 		obj->matlabCodegenIsDeleted = false;
+
 		return obj;
+	}
+
+	void BiquadFilter::setupAndReset()
+	{
+		setup();
+
+		// System object Initialization function: dsp.BiquadFilter
+		for(int i = 0; i < 6; i++)
+		{
+			cSFunObject.W0_FILT_STATES[ i ] = cSFunObject.P0_ICRTP;
+		}
 	}
 
 	void BiquadFilter::matlabCodegenDestructor()
 	{
-		if(!this->matlabCodegenIsDeleted)
+		if(!matlabCodegenIsDeleted)
 		{
-			this->matlabCodegenIsDeleted = true;
-			this->release();
+			matlabCodegenIsDeleted = true;
+			release();
 		}
 	}
 
 	void BiquadFilter::release()
 	{
-		if(this->isInitialized == 1)
+		if(isInitialized == 1)
 		{
-			this->isInitialized = 2;
+			isInitialized = 2;
 		}
 	}
 
 	void BiquadFilter::reset()
 	{
-		if(this->isInitialized == 1)
+		if(isInitialized == 1)
 		{
 			// System object Initialization function: dsp.BiquadFilter
 			for(int i = 0; i < 6; i++)
 			{
-				this->cSFunObject.W0_FILT_STATES[ i ] = this->cSFunObject.P0_ICRTP;
+				cSFunObject.W0_FILT_STATES[ i ] = cSFunObject.P0_ICRTP;
 			}
 		}
 	}
 
 	void BiquadFilter::setup()
 	{
-		this->isSetupComplete = false;
-		this->isInitialized = 1;
-		this->isSetupComplete = true;
+		isSetupComplete = false;
+		isInitialized = 1;
+		isSetupComplete = true;
 	}
 
 	void BiquadFilter::step( const double varargin_1[ 2048 ], const double
 		varargin_2[ 9 ], const double varargin_3[ 6 ], const double varargin_4[ 4 ],
 		double varargout_1[ 2048 ] )
 	{
-		dsp_BiquadFilter_0* obj;
-		double d;
-		double d1;
-		double d10;
-		double d11;
-		double d12;
-		double d13;
-		double d14;
-		double d15;
-		double d16;
-		double d17;
-		double d18;
-		double d2;
-		double d3;
-		double d4;
-		double d5;
-		double d6;
-		double d7;
-		double d8;
-		double d9;
-		int ioIdx;
-		if(this->isInitialized != 1)
+		if(isInitialized != 1)
 		{
-			this->setupAndReset();
+			setupAndReset();
 		}
 
-		obj = &this->cSFunObject;
+		auto* obj = &this->cSFunObject;
 
 		// System object Outputs function: dsp.BiquadFilter
-		ioIdx = 0;
-		d = varargin_4[ 0 ];
-		d1 = varargin_4[ 1 ];
-		d2 = varargin_4[ 2 ];
-		d3 = varargin_4[ 3 ];
-		d4 = varargin_2[ 0 ];
-		d5 = varargin_2[ 1 ];
-		d6 = varargin_2[ 2 ];
-		d7 = varargin_2[ 3 ];
-		d8 = varargin_2[ 4 ];
-		d9 = varargin_2[ 5 ];
-		d10 = varargin_2[ 6 ];
-		d11 = varargin_2[ 7 ];
-		d12 = varargin_2[ 8 ];
-		d13 = varargin_3[ 0 ];
-		d14 = varargin_3[ 1 ];
-		d15 = varargin_3[ 2 ];
-		d16 = varargin_3[ 3 ];
-		d17 = varargin_3[ 4 ];
-		d18 = varargin_3[ 5 ];
+		int ioIdx {};
+		auto d = varargin_4[ 0 ];
+		auto d1 = varargin_4[ 1 ];
+		auto d2 = varargin_4[ 2 ];
+		auto d3 = varargin_4[ 3 ];
+
+		auto d4 = varargin_2[ 0 ];
+		auto d5 = varargin_2[ 1 ];
+		auto d6 = varargin_2[ 2 ];
+		auto d7 = varargin_2[ 3 ];
+		auto d8 = varargin_2[ 4 ];
+		auto d9 = varargin_2[ 5 ];
+		auto d10 = varargin_2[ 6 ];
+		auto d11 = varargin_2[ 7 ];
+		auto d12 = varargin_2[ 8 ];
+		
+		auto d13 = varargin_3[ 0 ];
+		auto d14 = varargin_3[ 1 ];
+		auto d15 = varargin_3[ 2 ];
+		auto d16 = varargin_3[ 3 ];
+		auto d17 = varargin_3[ 4 ];
+		auto d18 = varargin_3[ 5 ];
+
 		for(int i = 0; i < 2048; i++)
 		{
-			double numAccum;
-			double stageIn;
-			double stageOut;
-			stageIn = d * varargin_1[ ioIdx ];
-			numAccum = obj->W0_FILT_STATES[ 0 ];
-			stageOut = numAccum + d4 * stageIn;
+			double numAccum = obj->W0_FILT_STATES[ 0 ];
+			double stageIn = d * varargin_1[ ioIdx ];
+			double stageOut = numAccum + d4 * stageIn;
+
 			numAccum = obj->W0_FILT_STATES[ 1 ];
 			obj->W0_FILT_STATES[ 0 ] = ( numAccum + d5 * stageIn ) - d13 * stageOut;
 			obj->W0_FILT_STATES[ 1 ] = d6 * stageIn - d14 * stageOut;

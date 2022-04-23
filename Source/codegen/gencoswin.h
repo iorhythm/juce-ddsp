@@ -15,9 +15,8 @@
 #include "rt_nonfinite.h"
 
 
-// Function Declarations
 namespace coder
 {
-  void calc_window(double m, double n, ::coder::array<double, 1U> &w);
-  void calc_window(double m, double n, double w_data[], int w_size[1]);
+	void calc_window( double m, double n, ::coder::array<double, 1U>& w );
+	void calc_window( double m, double n, double w_data[], int w_size[ 1 ] );
 }

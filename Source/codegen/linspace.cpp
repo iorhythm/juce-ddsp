@@ -12,7 +12,7 @@
 // Function Definitions
 namespace coder
 {
-	void linspace( double d2, double n, ::coder::array<double, 2U>& y )
+	void linspace( double d2, double n, array<double, 2U>& y )
 	{
 		if(!( n >= 0.0 ))
 		{
@@ -23,6 +23,7 @@ namespace coder
 			double delta1;
 			delta1 = std::floor( n );
 			y.set_size( 1, ( static_cast<int>( delta1 ) ) );
+
 			if(static_cast<int>( delta1 ) >= 1)
 			{
 				int y_tmp;

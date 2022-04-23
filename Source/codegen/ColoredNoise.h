@@ -17,7 +17,6 @@
 #include "rt_nonfinite.h"
 
 
-// Type Definitions
 namespace coder::dsp
 {
 	//________________________________________________________________________________
@@ -25,7 +24,7 @@ namespace coder::dsp
 	{
 	public:
 		ColoredNoise* init();
-		void step( double varargout_1[ 4096 ] );
+		void step( double varargout_1[ 4096 ], unsigned state[ 625 ] );
 		void setupAndReset();
 		void setup();
 		void release();
@@ -39,7 +38,7 @@ namespace coder::dsp
 	{
 	public:
 		b_ColoredNoise* init();
-		void step( double varargout_1[ 4096 ] );
+		void step( double varargout_1[ 4096 ], unsigned state[ 625 ] );
 		void setupAndReset();
 		void setup();
 		void release();
@@ -55,7 +54,7 @@ namespace coder::dsp
 	{
 	public:
 		c_ColoredNoise* init();
-		void step( double varargout_1[ 4096 ] );
+		void step( double varargout_1[ 4096 ], unsigned state[ 625 ] );
 		void setupAndReset();
 		void setup();
 		void release();

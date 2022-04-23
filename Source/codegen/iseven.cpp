@@ -9,7 +9,6 @@
 #include "iseven.h"
 
 
-// Function Definitions
 namespace coder
 {
 	boolean_T iseven( double x )

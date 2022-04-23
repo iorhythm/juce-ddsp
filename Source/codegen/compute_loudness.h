@@ -9,14 +9,36 @@
 //
 #pragma once
 
-#include "BiquadFilter.h"
-#include "DDSPSynth_initialize.h"
-#include "DDSPSynth_rtwutil.h"
 #include "FFTImplementationCallback.h"
 #include "gencoswin.h"
 #include "iseven.h"
 #include "weightingFilter.h"
 
 
-// Function Declarations
-extern double compute_loudness(double n_samples, const double audio[4096], double sample_rate);
+static double rt_hypotd_snf( double u0, double u1 )
+{
+	double a = std::abs( u0 );
+	double y = std::abs( u1 );
+
+	if(a < y)
+	{
+		a /= y;
+		y *= std::sqrt( a * a + 1.0 );
+	}
+	else if(a > y)
+	{
+		y /= a;
+		y = a * std::sqrt( y * y + 1.0 );
+	}
+	else
+	{
+		if(!rtIsNaN( y ))
+		{
+			y = a * 1.4142135623730951;
+		}
+	}
+
+	return y;
+}
+
+//double compute_loudness(double n_samples, const double audio[4096], double sample_rate);

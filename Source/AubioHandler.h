@@ -12,13 +12,12 @@
 #include <JuceHeader.h>
 #include <memory>
 
-
 #include "aubio.h"
+
 
 class AubioHandler
 {
 public:
-
 	// static singleton because the deleter needs access to the library...
 	static AubioHandler& getInstance()
 	{

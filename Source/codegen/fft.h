@@ -13,10 +13,9 @@
 
 #include "FFTImplementationCallback.h"
 
-// Function Declarations
+
 namespace coder
 {
-	void fft( const double x[ 65 ], double varargin_1, ::coder::array<creal_T, 1U>& y );
-	void fft( const double x_data[], const int x_size[ 1 ], double varargin_1, ::
-		coder::array<creal_T, 1U>& y );
+	void fft( const double x[ 65 ], double varargin_1, array<creal_T, 1U>& y );
+	void fft( const double x_data[], const int x_size[ 1 ], double varargin_1, array<creal_T, 1U>& y );
 }

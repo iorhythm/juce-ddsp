@@ -9,14 +9,12 @@
 #include "gencoswin.h"
 
 
-// Function Definitions
 namespace coder
 {
 	void calc_window( double m, double n, ::coder::array<double, 1U>& w )
 	{
 		array<double, 2U> y;
-		int k;
-		int nx;
+
 		if(rtIsNaN( m - 1.0 ))
 		{
 			y.set_size( 1, 1 );
@@ -33,29 +31,29 @@ namespace coder
 		}
 		else
 		{
-			nx = static_cast<int>( std::floor( m - 1.0 ) );
+			const auto nx = static_cast<int>( std::floor( m - 1.0 ) );
+
 			y.set_size( 1, ( nx + 1 ) );
-			for(k = 0; k <= nx; k++)
+
+			for(int k = 0; k <= nx; k++)
 			{
 				y[ k ] = k;
 			}
 		}
 
 		w.set_size( y.size( 1 ) );
-		nx = y.size( 1 );
-		for(k = 0; k < nx; k++)
+
+		for(int k = 0; k < y.size( 1 ); k++)
 		{
 			w[ k ] = 6.2831853071795862 * ( y[ k ] / ( n - 1.0 ) );
 		}
 
-		nx = w.size( 0 );
-		for(k = 0; k < nx; k++)
+		for(int k = 0; k < w.size( 0 ); k++)
 		{
 			w[ k ] = std::cos( w[ k ] );
 		}
 
-		nx = w.size( 0 );
-		for(k = 0; k < nx; k++)
+		for(int k = 0; k < w.size( 0 ); k++)
 		{
 			w[ k ] = 0.5 - 0.5 * w[ k ];
 		}
@@ -65,7 +63,7 @@ namespace coder
 	{
 		array<double, 2U> y;
 		array<double, 1U> b_y;
-		int i;
+
 		int loop_ub;
 		int nx;
 		if(rtIsNaN( m - 1.0 ))
@@ -99,7 +97,8 @@ namespace coder
 			{
 				y.set_size( 1, ( static_cast<int>( std::floor( m - 1.0 ) ) + 1 ) );
 				loop_ub = static_cast<int>( std::floor( m - 1.0 ) );
-				for(i = 0; i <= loop_ub; i++)
+
+				for( int i = 0; i <= loop_ub; i++)
 				{
 					y[ i ] = i;
 				}
@@ -108,13 +107,13 @@ namespace coder
 
 		b_y.set_size( y.size( 1 ) );
 		loop_ub = y.size( 1 );
-		for(i = 0; i < loop_ub; i++)
+		for( int i = 0; i < loop_ub; i++)
 		{
 			b_y[ i ] = y[ i ];
 		}
 
 		b_y.set_size( nx );
-		for(i = 0; i < nx; i++)
+		for( int i = 0; i < nx; i++)
 		{
 			b_y[ i ] = 6.2831853071795862 * ( b_y[ i ] / ( n - 1.0 ) );
 		}
@@ -127,7 +126,7 @@ namespace coder
 
 		w_size[ 0 ] = b_y.size( 0 );
 		loop_ub = b_y.size( 0 );
-		for(i = 0; i < loop_ub; i++)
+		for( int i = 0; i < loop_ub; i++)
 		{
 			w_data[ i ] = 0.54 - 0.46 * b_y[ i ];
 		}

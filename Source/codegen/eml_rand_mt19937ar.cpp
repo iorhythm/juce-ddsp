@@ -9,7 +9,6 @@
 #include "eml_rand_mt19937ar.h"
 
 
-// Function Definitions
 namespace coder
 {
 	void genrand_uint32_vector( unsigned int mt[ 625 ], unsigned int u[ 2 ] )
@@ -17,12 +16,11 @@ namespace coder
 		unsigned int y;
 		for(int j = 0; j < 2; j++)
 		{
-			unsigned int mti;
-			mti = mt[ 624 ] + 1U;
+			unsigned mti = mt[ 624 ] + 1U;
+
 			if(mti >= 625U)
 			{
-				int kk;
-				for(kk = 0; kk < 227; kk++)
+				for(int kk = 0; kk < 227; kk++)
 				{
 					y = ( mt[ kk ] & 2147483648U ) | ( mt[ kk + 1 ] & 2147483647U );
 					if(( y & 1U ) == 0U)
@@ -37,7 +35,7 @@ namespace coder
 					mt[ kk ] = mt[ kk + 397 ] ^ y;
 				}
 
-				for(kk = 0; kk < 396; kk++)
+				for(int kk = 0; kk < 396; kk++)
 				{
 					y = ( mt[ kk + 227 ] & 2147483648U ) | ( mt[ kk + 228 ] & 2147483647U );
 					if(( y & 1U ) == 0U)
@@ -75,5 +73,3 @@ namespace coder
 		}
 	}
 }
-
-// End of code generation (eml_rand_mt19937ar.cpp)

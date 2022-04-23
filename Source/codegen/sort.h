@@ -11,7 +11,6 @@
 #include "sortIdx.h"
 
 
-// Function Declarations
 namespace coder::internal
 {
 	void sort( double x[ 6 ], int idx[ 6 ] );

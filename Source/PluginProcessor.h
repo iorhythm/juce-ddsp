@@ -7,11 +7,7 @@
 #include "AdditiveComponent.h"
 #include "TensorflowHandler.h"
 #include "AubioHandler.h"
-#include "codegen/additive.h"
-#include "codegen/subtractive.h"
-#include "codegen/getPitch.h"
-#include "codegen/compute_loudness.h"
-#include "codegen/scale_f0.h"
+#include "codegen/DDSPSynth.h"
 
 
 class DdspsynthAudioProcessor : public AudioProcessor, AsyncUpdater, AudioProcessorValueTreeState::Listener, public HarmonicEditor::Listener
@@ -82,6 +78,7 @@ public:
 
 	void parameterChanged(const String& parameterID, float newValue ) override;
 
+	DDSPSynth ddspSynth;
 private:
 	// Parameters
 	AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

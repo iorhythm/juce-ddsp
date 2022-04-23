@@ -8,10 +8,10 @@
 //  Code generation for function 'randn'
 #include "randn.h"
 
-// Function Definitions
+
 namespace coder
 {
-	void randn( double r[ 4096 ] )
+	void randn( double r[ 4096 ], unsigned state[ 625 ] )
 	{
 		static const double dv[ 257 ] = { 0.0, 0.215241895984875, 0.286174591792068,
 			0.335737519214422, 0.375121332878378, 0.408389134611989, 0.43751840220787,

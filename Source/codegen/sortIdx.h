@@ -14,12 +14,9 @@
 
 #include "rt_nonfinite.h"
 
-// Function Declarations
-namespace coder
+
+namespace coder::internal
 {
-	namespace internal
-	{
-		void merge( int idx[ 6 ], double x[ 6 ], int offset, int np, int nq, int iwork[ 6 ],
-			double xwork[ 6 ] );
-	}
+	void merge( int idx[ 6 ], double x[ 6 ], int offset, int np, int nq, int iwork[ 6 ],
+		double xwork[ 6 ] );
 }

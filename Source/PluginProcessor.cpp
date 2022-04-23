@@ -39,7 +39,6 @@ DdspsynthAudioProcessor::DdspsynthAudioProcessor() :
 	jassert( modelDir.exists() ); // Check that the Models folder exists in the same path as the plugin
 
 	synthTree.addParameterListener( "inputIsLine", this );
-
 	synthTree.addParameterListener( "additiveOn", this );
 	synthTree.addParameterListener( "additiveShift", this );
 	synthTree.addParameterListener( "additiveStretch", this );
@@ -133,7 +132,7 @@ void DdspsynthAudioProcessor::changeProgramName( int index, const String& newNam
 {
 }
 
-//==============================================================================
+
 void DdspsynthAudioProcessor::prepareToPlay( double sampleRate, int samplesPerBlock )
 {
 	const auto numChannels{ jmax( getTotalNumInputChannels(), getTotalNumOutputChannels() ) };
@@ -171,7 +170,6 @@ void DdspsynthAudioProcessor::prepareToPlay( double sampleRate, int samplesPerBl
 	addBuffer.clear();
 	subBuffer.clear();
 
-	
 	addSectionGain.prepare( spec );
 	addSectionGain.setGainDecibels( *synthTree.getRawParameterValue( "additiveGain" ) );
 	addSectionGain.setRampDurationSeconds( 0.1 );
@@ -190,6 +188,7 @@ void DdspsynthAudioProcessor::releaseResources()
 {
 	abHandler.releaseResources();
 }
+
 
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool DdspsynthAudioProcessor::isBusesLayoutSupported( const BusesLayout& layouts ) const
@@ -229,15 +228,9 @@ void DdspsynthAudioProcessor::processBlock( AudioBuffer<float>& buffer, MidiBuff
 		auto aubioResults { abHandler.process( buffer ) };
 		DBG( "AUBIO Confidence = " + String{  aubioResults.confidence } );
 
+		// TODO mlInput only used for compute_loudness, which is currently commented out?!
+		mlInput.fill( 0.0f );
 		FVOP::copy( mlInput.data(), buffer.getReadPointer( 0 ), numSamples );
-
-		//for(int i {}; i < maxAmplitudes; ++i)
-		//{
-		//	if(i < numSamples)
-		//		mlInput[ i ] = in_l[ i ];
-		//	else
-		//		mlInput[ i ] = 0.0f;
-		//}
 
 		//tf_amps = compute_loudness((double)numSamples, mlInput, getSampleRate());
 		tf_amps = aubioResults.loudness;
@@ -310,7 +303,7 @@ void DdspsynthAudioProcessor::processBlock( AudioBuffer<float>& buffer, MidiBuff
 
 	if(*synthTree.getRawParameterValue( "additiveOn" ) && shouldSynthesize)
 	{
-		additive( (double) numSamples, getSampleRate(), 
+		ddspSynth.additive( (double) numSamples, getSampleRate(), 
 			amplitudesCopy.getReadPointer( 0 ), 
 			n_harmonics, 
 			harms_copy.data(), 
@@ -327,7 +320,7 @@ void DdspsynthAudioProcessor::processBlock( AudioBuffer<float>& buffer, MidiBuff
 
 	if(*synthTree.getRawParameterValue( "noiseOn" ) && shouldSynthesize)
 	{
-		subtractive( numSamples, mags_copy.data(), (double) *synthTree.getRawParameterValue( "noiseColor" ), initial_bias, subBuffer.getWritePointer(0));
+		ddspSynth.subtractive( numSamples, mags_copy.data(), (double) *synthTree.getRawParameterValue( "noiseColor" ), initial_bias, subBuffer.getWritePointer(0));
 	}
 	else
 		subBuffer.clear();

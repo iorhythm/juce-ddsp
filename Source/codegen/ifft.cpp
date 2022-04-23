@@ -9,7 +9,6 @@
 #include "ifft.h"
 
 
-// Function Definitions
 namespace coder
 {
 	void ifft( const creal_T x[ 65 ], creal_T y[ 65 ] )
@@ -731,8 +730,7 @@ namespace coder
 		}
 	}
 
-	void ifft( const ::coder::array<creal_T, 1U>& x, double varargin_1, ::coder::
-		array<creal_T, 1U>& y )
+	void ifft( const ::coder::array<creal_T, 1U>& x, double varargin_1, ::coder::array<creal_T, 1U>& y )
 	{
 		array<creal_T, 1U> fv;
 		array<creal_T, 1U> fy;

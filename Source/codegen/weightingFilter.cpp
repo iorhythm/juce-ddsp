@@ -3,17 +3,16 @@
 //  course requirements at degree granting institutions only.  Not for
 //  government, commercial, or other organizational use.
 //
-//  weightingFilter.cpp
+//  WeightingFilter.cpp
 //
-//  Code generation for function 'weightingFilter'
+//  Code generation for function 'WeightingFilter'
 //
 #include "weightingFilter.h"
 
 
-// Function Definitions
 namespace coder
 {
-	void weightingFilter::checkTunableProps()
+	void WeightingFilter::checkTunableProps()
 	{
 		if(this->TunablePropsChanged)
 		{
@@ -22,7 +21,7 @@ namespace coder
 		}
 	}
 
-	void weightingFilter::designFilter()
+	void WeightingFilter::designFilter()
 	{
 		static const double p[ 6 ] = { -129.42731529303637, -129.42731529303637,
 			-676.40154875894643, -4636.1251222587643, -76618.525086959533,
@@ -189,12 +188,12 @@ namespace coder
 		}
 	}
 
-	double weightingFilter::get_SampleRate() const
+	double WeightingFilter::get_SampleRate() const
 	{
 		return this->pSampleRateDialog;
 	}
 
-	void weightingFilter::release()
+	void WeightingFilter::release()
 	{
 		if(this->isInitialized == 1)
 		{
@@ -203,7 +202,7 @@ namespace coder
 		}
 	}
 
-	void weightingFilter::releaseWrapper()
+	void WeightingFilter::releaseWrapper()
 	{
 		if(this->isSetupComplete)
 		{
@@ -212,7 +211,7 @@ namespace coder
 		}
 	}
 
-	void weightingFilter::setup()
+	void WeightingFilter::setup()
 	{
 		this->isSetupComplete = false;
 		this->isInitialized = 1;
@@ -225,26 +224,26 @@ namespace coder
 		this->TunablePropsChanged = false;
 	}
 
-	void weightingFilter::setupAndReset()
+	void WeightingFilter::setupAndReset()
 	{
 		this->setup();
 		this->pFilter.reset();
 		this->designFilter();
 	}
 
-	weightingFilter::weightingFilter()
+	WeightingFilter::WeightingFilter()
 	{
 		this->matlabCodegenIsDeleted = true;
 	}
 
-	weightingFilter::~weightingFilter()
+	WeightingFilter::~WeightingFilter()
 	{
 		this->matlabCodegenDestructor();
 	}
 
-	weightingFilter* weightingFilter::init( double varargin_2 )
+	WeightingFilter* WeightingFilter::init( double varargin_2 )
 	{
-		weightingFilter* obj;
+		WeightingFilter* obj;
 		obj = this;
 		obj->pNumChannels = -1.0;
 		obj->isInitialized = 0;
@@ -253,12 +252,12 @@ namespace coder
 		return obj;
 	}
 
-	boolean_T weightingFilter::isLockedAndNotReleased() const
+	boolean_T WeightingFilter::isLockedAndNotReleased() const
 	{
 		return this->isInitialized == 1;
 	}
 
-	void weightingFilter::matlabCodegenDestructor()
+	void WeightingFilter::matlabCodegenDestructor()
 	{
 		if(!this->matlabCodegenIsDeleted)
 		{
@@ -267,12 +266,12 @@ namespace coder
 		}
 	}
 
-	void weightingFilter::set_SampleRate( double value )
+	void WeightingFilter::set_SampleRate( double value )
 	{
 		this->pSampleRateDialog = value;
 	}
 
-	void weightingFilter::step( const double varargin_1[ 2048 ], double varargout_1
+	void WeightingFilter::step( const double varargin_1[ 2048 ], double varargout_1
 		[ 2048 ] )
 	{
 		double obj[ 9 ];
@@ -298,4 +297,4 @@ namespace coder
 	}
 }
 
-// End of code generation (weightingFilter.cpp)
+// End of code generation (WeightingFilter.cpp)

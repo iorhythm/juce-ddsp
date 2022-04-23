@@ -11,13 +11,12 @@
 #include "SystemProp.h"
 
 
-// Type Declarations
 namespace coder
 {
-	class weightingFilter;
+	class WeightingFilter;
 }
 
-// Type Definitions
+
 namespace coder
 {
 	namespace matlab
@@ -29,7 +28,7 @@ namespace coder
 				class ProcessConstructorArguments
 				{
 				public:
-					static void b_do( weightingFilter* obj, double varargin_2 );
+					static void b_do( WeightingFilter* obj, double varargin_2 );
 				};
 			}
 		}

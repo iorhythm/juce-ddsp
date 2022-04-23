@@ -526,46 +526,22 @@
     <ClCompile Include="..\..\Source\SubtractiveComponent.cpp">
       <Filter>DDSPSynth\Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\fftshift.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AubioHandler.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\BiquadFilter.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\codegen\ColoredNoise.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\codegen\compute_loudness.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\codegen\DDSPSynth.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\codegen\eml_rand_mt19937ar.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\getPitch.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\iseven.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\ProcessConstructorArguments.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\scale_f0.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\sort.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\sortIdx.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\SystemProp.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\weightingFilter.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\linspace.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\eml_setop.cpp">
@@ -577,6 +553,9 @@
     <ClCompile Include="..\..\Source\codegen\FFTImplementationCallback.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\codegen\fftshift.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\codegen\findpeaks.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
@@ -586,28 +565,13 @@
     <ClCompile Include="..\..\Source\codegen\ifft.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\TensorflowHandler.cpp">
+    <ClCompile Include="..\..\Source\codegen\iseven.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\additive.cpp">
+    <ClCompile Include="..\..\Source\codegen\linspace.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\ColoredNoise.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\DDSPSynth_data.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\DDSPSynth_initialize.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\DDSPSynth_rtwutil.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\DDSPSynth_terminate.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\eml_rand_mt19937ar_stateful.cpp">
+    <ClCompile Include="..\..\Source\codegen\ProcessConstructorArguments.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\randn.cpp">
@@ -622,7 +586,19 @@
     <ClCompile Include="..\..\Source\codegen\rtGetNaN.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\subtractive.cpp">
+    <ClCompile Include="..\..\Source\codegen\sort.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\codegen\sortIdx.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\codegen\SystemProp.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\TensorflowHandler.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\codegen\weightingFilter.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
@@ -2916,43 +2892,25 @@
     <ClInclude Include="..\..\Source\AubioHandler.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\fftshift.h">
+    <ClInclude Include="..\..\Source\codegen\BiquadFilter.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\BiquadFilter.h">
+    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\c_api.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\coder_array.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\ColoredNoise.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\compute_loudness.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\DDSPSynth.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\codegen\eml_rand_mt19937ar.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\getPitch.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\iseven.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\ProcessConstructorArguments.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\scale_f0.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\sort.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\sortIdx.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\SystemProp.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\weightingFilter.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\linspace.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\eml_setop.h">
@@ -2964,6 +2922,9 @@
     <ClInclude Include="..\..\Source\codegen\FFTImplementationCallback.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\fftshift.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\codegen\findpeaks.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
@@ -2973,49 +2934,13 @@
     <ClInclude Include="..\..\Source\codegen\ifft.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\TensorflowHandler.h">
+    <ClInclude Include="..\..\Source\codegen\iseven.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\c_api.h">
+    <ClInclude Include="..\..\Source\codegen\linspace.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_attrtype.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_datatype.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_status.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_tensor.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\additive.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\coder_array.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\ColoredNoise.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\DDSPSynth_data.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\DDSPSynth_initialize.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\DDSPSynth_rtwutil.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\DDSPSynth_terminate.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\DDSPSynth_types.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\eml_rand_mt19937ar_stateful.h">
+    <ClInclude Include="..\..\Source\codegen\ProcessConstructorArguments.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\randn.h">
@@ -3033,10 +2958,34 @@
     <ClInclude Include="..\..\Source\codegen\rtwtypes.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\subtractive.h">
+    <ClInclude Include="..\..\Source\codegen\sort.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\sortIdx.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\SystemProp.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TensorflowHandler.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_attrtype.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_datatype.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_status.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\tensorflow_c\include\tensorflow\c\tf_tensor.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\tmwtypes.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\codegen\weightingFilter.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">

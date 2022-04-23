@@ -9,7 +9,6 @@
 #include "ProcessConstructorArguments.h"
 
 
-// Function Definitions
 namespace coder
 {
 	namespace matlab
@@ -18,7 +17,7 @@ namespace coder
 		{
 			namespace coder
 			{
-				void ProcessConstructorArguments::b_do( weightingFilter* obj, double
+				void ProcessConstructorArguments::b_do( WeightingFilter* obj, double
 					varargin_2 )
 				{
 					SystemProp::matlabCodegenNotifyAnyProp( ( obj ) );
@@ -28,5 +27,3 @@ namespace coder
 		}
 	}
 }
-
-// End of code generation (ProcessConstructorArguments.cpp)

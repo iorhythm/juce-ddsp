@@ -14,7 +14,7 @@
 
 #include "rt_nonfinite.h"
 
-// Function Declarations
+
 namespace coder
 {
 	void fftshift( double x[ 65 ] );

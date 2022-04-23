@@ -18,7 +18,7 @@ namespace coder
 		{
 			namespace coder
 			{
-				void SystemProp::matlabCodegenNotifyAnyProp( weightingFilter* obj )
+				void SystemProp::matlabCodegenNotifyAnyProp( WeightingFilter* obj )
 				{
 					if(obj->isLockedAndNotReleased())
 					{

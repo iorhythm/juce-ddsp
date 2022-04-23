@@ -10,10 +10,10 @@
 
 #include "weightingFilter.h"
 
-// Type Declarations
+
 namespace coder
 {
-	class weightingFilter;
+	class WeightingFilter;
 }
 
 // Type Definitions
@@ -28,7 +28,7 @@ namespace coder
 				class SystemProp
 				{
 				public:
-					static void matlabCodegenNotifyAnyProp( weightingFilter* obj );
+					static void matlabCodegenNotifyAnyProp( WeightingFilter* obj );
 				};
 			}
 		}

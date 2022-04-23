@@ -10,106 +10,102 @@
 #include "ColoredNoise.h"
 
 
-// Function Definitions
 namespace coder::dsp
 {
 	void ColoredNoise::setup()
 	{
-		this->isSetupComplete = false;
-		this->isInitialized = 1;
-		this->isSetupComplete = true;
+		isSetupComplete = false;
+		isInitialized = 1;
+		isSetupComplete = true;
 	}
 
 	void b_ColoredNoise::setup()
 	{
-		this->isSetupComplete = false;
-		this->isInitialized = 1;
-		this->isSetupComplete = true;
+		isSetupComplete = false;
+		isInitialized = 1;
+		isSetupComplete = true;
 	}
 
 	void c_ColoredNoise::setup()
 	{
-		this->isSetupComplete = false;
-		this->isInitialized = 1;
-		this->isSetupComplete = true;
+		isSetupComplete = false;
+		isInitialized = 1;
+		isSetupComplete = true;
 	}
 
 	void ColoredNoise::setupAndReset()
 	{
-		this->setup();
+		setup();
 	}
 
 	void b_ColoredNoise::setupAndReset()
 	{
-		this->setup();
+		setup();
 		std::memset( &this->pFilterStates[ 0 ], 0, 10U * sizeof( double ) );
 	}
 
 	void c_ColoredNoise::setupAndReset()
 	{
-		this->setup();
+		setup();
 		std::memset( &this->pFilterStates[ 0 ], 0, 255U * sizeof( double ) );
 	}
 
 	ColoredNoise* ColoredNoise::init()
 	{
-		ColoredNoise* obj;
-		obj = this;
+		ColoredNoise* obj = this;
 		obj->isInitialized = 0;
 		return obj;
 	}
 
 	b_ColoredNoise* b_ColoredNoise::init()
 	{
-		b_ColoredNoise* obj;
-		obj = this;
+		b_ColoredNoise* obj = this;
 		obj->isInitialized = 0;
 		return obj;
 	}
 
 	c_ColoredNoise* c_ColoredNoise::init()
 	{
-		c_ColoredNoise* obj;
-		obj = this;
+		c_ColoredNoise* obj = this;
 		obj->isInitialized = 0;
 		return obj;
 	}
 
 	void ColoredNoise::release()
 	{
-		if(this->isInitialized == 1)
+		if(isInitialized == 1)
 		{
-			this->isInitialized = 2;
+			isInitialized = 2;
 		}
 	}
 
 	void b_ColoredNoise::release()
 	{
-		if(this->isInitialized == 1)
+		if(isInitialized == 1)
 		{
-			this->isInitialized = 2;
+			isInitialized = 2;
 		}
 	}
 
 	void c_ColoredNoise::release()
 	{
-		if(this->isInitialized == 1)
+		if(isInitialized == 1)
 		{
-			this->isInitialized = 2;
+			isInitialized = 2;
 		}
 	}
 
-	void ColoredNoise::step( double varargout_1[ 4096 ] )
+	void ColoredNoise::step( double varargout_1[ 4096 ], unsigned state[ 625 ] )
 	{
-		if(this->isInitialized != 1)
+		if(isInitialized != 1)
 		{
-			this->setupAndReset();
+			setupAndReset();
 		}
 
-		randn( varargout_1 );
+		randn( varargout_1, state );
 	}
 
-	void b_ColoredNoise::step( double varargout_1[ 4096 ] )
+	void b_ColoredNoise::step( double varargout_1[ 4096 ], unsigned state[ 625 ] )
 	{
 		static const double num[ 30 ] = { 1.0, 1.0, 1.0, 1.0, 1.0, 0.768234948541554,
 			0.864504936506425, -1.961428522477521, 0.060383703505529,
@@ -122,12 +118,14 @@ namespace coder::dsp
 		double a[ 3 ];
 		double b[ 3 ];
 		double dv[ 2 ];
-		if(this->isInitialized != 1)
+
+		if(isInitialized != 1)
 		{
-			this->setupAndReset();
+			setupAndReset();
 		}
 
-		randn( varargout_1 );
+		randn( varargout_1, state );
+
 		for(int jj = 0; jj < 5; jj++)
 		{
 			int j;
@@ -154,6 +152,7 @@ namespace coder::dsp
 			dv[ 1 ] = 0.0;
 			out[ 1 ] = this->pFilterStates[ zi_idx_0_tmp + 1 ];
 			std::memset( &out[ 2 ], 0, 4094U * sizeof( double ) );
+
 			for(int k = 0; k < 4096; k++)
 			{
 				double as;
@@ -212,12 +211,12 @@ namespace coder::dsp
 			}
 
 			std::memcpy( &varargout_1[ 0 ], &out[ 0 ], 4096U * sizeof( double ) );
-			this->pFilterStates[ zi_idx_0_tmp ] = dv[ 0 ];
-			this->pFilterStates[ zi_idx_0_tmp + 1 ] = dv[ 1 ];
+			pFilterStates[ zi_idx_0_tmp ] = dv[ 0 ];
+			pFilterStates[ zi_idx_0_tmp + 1 ] = dv[ 1 ];
 		}
 	}
 
-	void c_ColoredNoise::step( double varargout_1[ 4096 ] )
+	void c_ColoredNoise::step( double varargout_1[ 4096 ], unsigned state[ 625 ] )
 	{
 		static const double dv1[ 256 ] = { 1.0, -0.99500000000000011,
 			-0.0024874999999999472, -0.00083331249999998218, -0.00041769789062499104,
@@ -310,12 +309,13 @@ namespace coder::dsp
 		double dv[ 255 ];
 		int j;
 		int k;
-		if(this->isInitialized != 1)
+
+		if(isInitialized != 1)
 		{
-			this->setupAndReset();
+			setupAndReset();
 		}
 
-		randn( varargout_1 );
+		randn( varargout_1, state );
 		for(k = 0; k < 255; k++)
 		{
 			dv[ k ] = 0.0;

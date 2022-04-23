@@ -15,7 +15,6 @@
 #include "coder_array.h"
 
 
-// Function Declarations
 namespace coder
 {
 	void linspace( double d2, double n, ::coder::array<double, 2U>& y );

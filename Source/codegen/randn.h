@@ -9,11 +9,10 @@
 //
 #pragma once
 
-#include "DDSPSynth_data.h"
 #include "eml_rand_mt19937ar.h"
 
-// Function Declarations
+
 namespace coder
 {
-	void randn( double r[ 4096 ] );
+	void randn( double r[ 4096 ], unsigned state[ 625 ] );
 }

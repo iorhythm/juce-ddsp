@@ -9,12 +9,10 @@
 #include "eml_setop.h"
 
 
-
 namespace coder
 {
-	void do_vectors( const ::coder::array<int, 1U>& a, const ::coder::array<int, 1U>
-		& b, ::coder::array<int, 1U>& c, ::coder::array<int, 1U>& ia, ::
-		coder::array<int, 1U>& ib )
+	void do_vectors( const array<int, 1U>& a, const array<int, 1U>& b, 
+	array<int, 1U>& c, array<int, 1U>& ia, array<int, 1U>& ib )
 	{
 		int b_ialast;
 		int b_iblast;
@@ -163,5 +161,3 @@ namespace coder
 		}
 	}
 }
-
-// End of code generation (eml_setop.cpp)

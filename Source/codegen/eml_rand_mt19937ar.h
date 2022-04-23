@@ -14,7 +14,7 @@
 
 #include "rt_nonfinite.h"
 
-// Function Declarations
+
 namespace coder
 {
 	void genrand_uint32_vector( unsigned int mt[ 625 ], unsigned int u[ 2 ] );

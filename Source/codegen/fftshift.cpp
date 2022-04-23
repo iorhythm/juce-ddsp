@@ -9,34 +9,34 @@
 #include "fftshift.h"
 
 
-// Function Definitions
 namespace coder
 {
 	void fftshift( double x[ 65 ] )
 	{
-		int i2;
-		i2 = 0;
-		for(int i = 0; i < 1; i++)
+		int i2 {};
+
+		for(int i = 0; i < 1; ++i)
 		{
-			int i1;
-			i1 = i2;
+			int i1 = i2;
+
 			i2 += 64;
-			for(int j = 0; j < 1; j++)
+			
+			for(int j {}; j < 1; ++j)
 			{
-				double xtmp;
-				int ia;
-				int ib;
-				i1++;
-				i2++;
-				ia = i1 - 1;
-				ib = i1 + 31;
-				xtmp = x[ i1 + 31 ];
-				for(int k = 0; k < 32; k++)
+				++i1;
+				++i2;
+
+				int ia = i1 - 1;
+				int ib = i1 + 31;
+
+				auto xtmp = x[ i1 + 31 ];
+
+				for(int k {}; k < 32; ++k)
 				{
 					x[ ib ] = x[ ia ];
 					x[ ia ] = x[ ib + 1 ];
-					ia++;
-					ib++;
+					++ia;
+					++ib;
 				}
 
 				x[ ib ] = xtmp;
@@ -44,5 +44,3 @@ namespace coder
 		}
 	}
 }
-
-// End of code generation (fftshift.cpp)

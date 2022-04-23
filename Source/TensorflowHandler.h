@@ -7,11 +7,11 @@
 
   ==============================================================================
 */
-
 #pragma once
 
 #include <JuceHeader.h>
 #include "tensorflow_c/include/tensorflow/c/c_api.h"
+
 
 class TensorflowHandler : public Thread
 {

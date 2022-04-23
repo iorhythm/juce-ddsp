@@ -3,9 +3,9 @@
 //  course requirements at degree granting institutions only.  Not for
 //  government, commercial, or other organizational use.
 //
-//  weightingFilter.h
+//  WeightingFilter.h
 //
-//  Code generation for function 'weightingFilter'
+//  Code generation for function 'WeightingFilter'
 //
 #pragma once
 
@@ -16,7 +16,6 @@
 #include "sort.h"
 
 
-// Type Definitions
 struct cell_wrap_3
 {
 	unsigned int f1[ 8 ];
@@ -24,13 +23,13 @@ struct cell_wrap_3
 
 namespace coder
 {
-	class weightingFilter
+	class WeightingFilter
 	{
 	public:
-		weightingFilter();
-		~weightingFilter();
+		WeightingFilter();
+		~WeightingFilter();
 
-		weightingFilter* init( double varargin_2 );
+		WeightingFilter* init( double varargin_2 );
 		boolean_T isLockedAndNotReleased() const;
 		void set_SampleRate( double value );
 		void step( const double varargin_1[ 2048 ], double varargout_1[ 2048 ] );
