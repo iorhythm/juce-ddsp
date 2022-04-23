@@ -21,9 +21,9 @@ public:
 
 	// TODO: this should probably be read from a gin file
 	// or possibly the model file?
-	static const int numHarmonics = 60;
-	static const int numMagnitudes = 65;
-	static const int timeSteps = 1;
+	static constexpr auto numHarmonics { 60 };
+	static constexpr auto numMagnitudes { 65 };
+	static constexpr auto timeSteps { 1 };
 
 	struct ModelResults
 	{
@@ -31,8 +31,6 @@ public:
 		float harmonicDistribution[timeSteps * numHarmonics];
 		float noiseMagnitudes[timeSteps * numMagnitudes];
 	};
-
-	typedef struct ModelResults ModelResults;
 
 	void loadModel(const char* path);
 	void unloadModel();

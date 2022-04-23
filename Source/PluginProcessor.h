@@ -7,17 +7,25 @@
 #include "AdditiveComponent.h"
 #include "TensorflowHandler.h"
 #include "AubioHandler.h"
+#include "codegen/additive.h"
+#include "codegen/subtractive.h"
+#include "codegen/getPitch.h"
+#include "codegen/compute_loudness.h"
+#include "codegen/scale_f0.h"
 
 
 class DdspsynthAudioProcessor : public AudioProcessor, AsyncUpdater, AudioProcessorValueTreeState::Listener, public HarmonicEditor::Listener
 {
 public:
+	using FVOP = juce::FloatVectorOperations;
+
 	static constexpr auto fftOrder { 10 };
 	static constexpr auto fftSize { 1 << fftOrder };
 
 	static constexpr auto maxAmplitudes { 4096 };
-	static constexpr auto max_n_harmonics { 100 };
-
+	static constexpr auto maxMagnitudes { 65 };
+	static constexpr auto maxHarmonics { 100 };
+	
 	//==============================================================================
 	DdspsynthAudioProcessor();
 	~DdspsynthAudioProcessor() override;
@@ -56,7 +64,7 @@ public:
 	void setStateInformation (const void* data, int sizeInBytes) override;
 	
 	//==============================================================================
-	void pushNextSampleIntoFifo (float sample) noexcept;
+	void pushNextSampleIntoFifo ( const float sample) noexcept;
 	
 	int getFftSize() { return fftSize; };
 	int getFftOrder() { return fftOrder; };
@@ -66,63 +74,51 @@ public:
 
 	void setNextFFTBlockReady(bool nextFFTBlockReady_) { nextFFTBlockReady = nextFFTBlockReady_; };
 
-	void parseModelConfigJSON(String path);
-	void setModelOutput(TensorflowHandler::ModelResults results);
+	void parseModelConfigJSON(const String& path);
+	void setModelOutput(const TensorflowHandler::ModelResults& results);
 
 	void onHarmonicsChange(double* harmonics, int nHarmonics);
 	int getNumberOfHarmonics();
 
-	void parameterChanged(const String &parameterID, float newValue ) override;
+	void parameterChanged(const String& parameterID, float newValue ) override;
 
 private:
+	// Parameters
 	AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 	AudioProcessorValueTreeState::ParameterLayout createModelParameterLayout();
 
-	// Parameters
-	AudioProcessorValueTreeState synthParameters;
-	AudioProcessorValueTreeState modelParameters;
-
-	std::atomic<float>* inputSelectParameter = nullptr;
-	std::atomic<float>* modelOnParameter = nullptr;
-	std::atomic<float>* modelChoiceParameter = nullptr;
-	std::atomic<float>* additiveOnParameter = nullptr;
-	std::atomic<float>* additiveShiftParameter = nullptr;
-	std::atomic<float>* additiveStretchParameter = nullptr;
-	std::atomic<float>* additiveGainParameter = nullptr;
-	std::atomic<float>* noiseOnParameter = nullptr;
-	std::atomic<float>* noiseColorParameter = nullptr;
-	std::atomic<float>* noiseGainParameter = nullptr;
-	std::atomic<float>* modulationOnParameter = nullptr;
-	std::atomic<float>* modulationRateParameter = nullptr;
-	std::atomic<float>* modulationDelayParameter = nullptr;
-	std::atomic<float>* modulationAmountParameter = nullptr;
-	std::atomic<float>* reverbOnParameter = nullptr;
-	std::atomic<float>* reverbMixParameter = nullptr;
-	std::atomic<float>* reverbSizeParameter = nullptr;
-	std::atomic<float>* reverbGlowParameter = nullptr;
-	std::atomic<float>* outputGainParameter = nullptr;
-	std::atomic<float>* attackParameter = nullptr;
-	std::atomic<float>* decayParameter = nullptr;
-	std::atomic<float>* sustainParameter = nullptr;
-	std::atomic<float>* releaseParameter = nullptr;
+	AudioProcessorValueTreeState synthTree;
+	AudioProcessorValueTreeState modelTree;
 	
 	// Internal parameters
 	bool shouldSynthesize = true;
-	double phaseBuffer_in[max_n_harmonics];
-	double phaseBuffer_out[max_n_harmonics];
-	double amplitudes[maxAmplitudes];
+	std::array< double, maxHarmonics > phaseBuffer_in;
+	std::array< double, maxHarmonics > phaseBuffer_out;
 	double ld;
 	double f0_in;
 	double f0_out;
-	double f0[maxAmplitudes];
-	double n_harmonics = 60;
-	double harmonics[max_n_harmonics];
-	double userHarmonics[max_n_harmonics];
-	double addBuffer[maxAmplitudes];
+	std::array< float, maxAmplitudes > mlInput;
+	std::array< double, maxAmplitudes > f0;
+	int n_harmonics { 60 };
+	std::array< double, maxHarmonics > harmonics;
+	std::array< double, maxHarmonics > harms_copy;
+	std::array< double, maxHarmonics > userHarmonics;
 	double initial_bias = -5.0f;
-	double subBuffer[maxAmplitudes];
-	double magnitudes[65];
-	double numSamples;
+
+	juce::AudioBuffer< double > amplitudes { 1, maxAmplitudes };
+	juce::AudioBuffer< double > amplitudesCopy { 1, maxAmplitudes };
+	
+	juce::AudioBuffer< double > addBuffer { 1, maxAmplitudes };
+	juce::AudioBuffer< double > subBuffer { 1, maxAmplitudes };
+
+	std::array< double, maxMagnitudes > magnitudes;
+	std::array< double, maxMagnitudes > mags_copy;
+
+	int numSamples {};
+
+	dsp::Gain< float > addSectionGain;
+	dsp::Gain< float > subSectionGain;
+	dsp::Gain< float > outputGain;
 
 	// Midi features
 	ADSR adsr;
@@ -130,23 +126,23 @@ private:
 	float midiVelocity;
 	float adsrVelocity;
 	float midiNoteHz;
-	int currentMidiNote = 0;
+	int currentMidiNote {};
 
 	// FFT Window
 	dsp::FFT forwardFFT;
 	
 	float fifo [fftSize];
 	float fftData [2 * fftSize];
-	int fifoIndex = 0;
-	bool nextFFTBlockReady = false;
+	int fifoIndex {};
+	bool nextFFTBlockReady { false };
 
 	// Tensorflow 
 	TensorflowHandler tfHandler;
 	TensorflowHandler::ModelResults tfResults;
 
 	// TF test
-	float tf_f0;
-	float tf_amps;
+	float tf_f0 {};
+	float tf_amps { -120.0f };
 
 	File modelDir;
 
