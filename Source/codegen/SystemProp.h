@@ -6,42 +6,31 @@
 //  SystemProp.h
 //
 //  Code generation for function 'SystemProp'
-//
+#pragma once
 
-
-#ifndef SYSTEMPROP_H
-#define SYSTEMPROP_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
+#include "weightingFilter.h"
 
 // Type Declarations
 namespace coder
 {
-  class weightingFilter;
+	class weightingFilter;
 }
 
 // Type Definitions
 namespace coder
 {
-  namespace matlab
-  {
-    namespace system
-    {
-      namespace coder
-      {
-        class SystemProp
-        {
-         public:
-          static void matlabCodegenNotifyAnyProp(weightingFilter *obj);
-        };
-      }
-    }
-  }
+	namespace matlab
+	{
+		namespace system
+		{
+			namespace coder
+			{
+				class SystemProp
+				{
+				public:
+					static void matlabCodegenNotifyAnyProp( weightingFilter* obj );
+				};
+			}
+		}
+	}
 }
-
-#endif
-
-// End of code generation (SystemProp.h)

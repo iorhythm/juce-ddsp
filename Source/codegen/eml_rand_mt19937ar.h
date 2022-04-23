@@ -7,22 +7,15 @@
 //
 //  Code generation for function 'eml_rand_mt19937ar'
 //
+#pragma once
 
-
-#ifndef EML_RAND_MT19937AR_H
-#define EML_RAND_MT19937AR_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "rt_nonfinite.h"
 
 // Function Declarations
 namespace coder
 {
-  void genrand_uint32_vector(unsigned int mt[625], unsigned int u[2]);
+	void genrand_uint32_vector( unsigned int mt[ 625 ], unsigned int u[ 2 ] );
 }
-
-#endif
-
-// End of code generation (eml_rand_mt19937ar.h)

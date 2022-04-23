@@ -7,13 +7,6 @@
 //
 //  Code generation for function 'additive'
 //
+#pragma once
 
-
-#ifndef DDSPSYNTH_TYPES_H
-#define DDSPSYNTH_TYPES_H
-
-// Include files
 #include "rtwtypes.h"
-#endif
-
-// End of code generation (DDSPSynth_types.h)

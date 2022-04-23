@@ -7,22 +7,13 @@
 //
 //  Code generation for function 'randn'
 //
+#pragma once
 
-
-#ifndef RANDN_H
-#define RANDN_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
+#include "DDSPSynth_data.h"
+#include "eml_rand_mt19937ar.h"
 
 // Function Declarations
 namespace coder
 {
-  void randn(double r[4096]);
+	void randn( double r[ 4096 ] );
 }
-
-#endif
-
-// End of code generation (randn.h)

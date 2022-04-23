@@ -6,21 +6,15 @@
 //  subtractive.h
 //
 //  Code generation for function 'subtractive'
-//
+#pragma once
 
-
-#ifndef SUBTRACTIVE_H
-#define SUBTRACTIVE_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
+#include "ColoredNoise.h"
+#include "DDSPSynth_initialize.h"
+#include "DDSPSynth_rtwutil.h"
+#include "fft.h"
+#include "fftshift.h"
+#include "ifft.h"
 
 // Function Declarations
 extern void subtractive(double n_samples, const double magnitudes[65], double
   color, double initial_bias, double out[4096]);
-
-#endif
-
-// End of code generation (subtractive.h)

@@ -7,22 +7,15 @@
 //
 //  Code generation for function 'fftshift'
 //
+#pragma once
 
-
-#ifndef FFTSHIFT_H
-#define FFTSHIFT_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "rt_nonfinite.h"
 
 // Function Declarations
 namespace coder
 {
-  void fftshift(double x[65]);
+	void fftshift( double x[ 65 ] );
 }
-
-#endif
-
-// End of code generation (fftshift.h)

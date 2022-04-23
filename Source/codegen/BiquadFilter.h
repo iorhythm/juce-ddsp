@@ -7,52 +7,44 @@
 //
 //  Code generation for function 'BiquadFilter'
 //
+#pragma once
 
-
-#ifndef BIQUADFILTER_H
-#define BIQUADFILTER_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "rt_nonfinite.h"
+
 
 // Type Definitions
 struct dsp_BiquadFilter_0
 {
-  int S0_isInitialized;
-  double W0_FILT_STATES[6];
-  int W1_PreviousNumChannels;
-  double P0_ICRTP;
+	int S0_isInitialized;
+	double W0_FILT_STATES[ 6 ];
+	int W1_PreviousNumChannels;
+	double P0_ICRTP;
 };
 
-namespace coder
+namespace coder::dspcodegen
 {
-  namespace dspcodegen
-  {
-    class BiquadFilter
-    {
-     public:
-      BiquadFilter *init();
-      void setup();
-      void reset();
-      void step(const double varargin_1[2048], const double varargin_2[9], const
-                double varargin_3[6], const double varargin_4[4], double
-                varargout_1[2048]);
-      void setupAndReset();
-      void matlabCodegenDestructor();
-      void release();
-      ~BiquadFilter();
-      BiquadFilter();
-      boolean_T matlabCodegenIsDeleted;
-     private:
-      int isInitialized;
-      boolean_T isSetupComplete;
-      dsp_BiquadFilter_0 cSFunObject;
-    };
-  }
+	class BiquadFilter
+	{
+	public:
+		BiquadFilter();
+		~BiquadFilter();
+
+		BiquadFilter* init();
+		void setup();
+		void reset();
+		void step( const double varargin_1[ 2048 ], const double varargin_2[ 9 ], const
+			double varargin_3[ 6 ], const double varargin_4[ 4 ], double
+			varargout_1[ 2048 ] );
+		void setupAndReset();
+		void matlabCodegenDestructor();
+		void release();
+		boolean_T matlabCodegenIsDeleted;
+	private:
+		int isInitialized;
+		boolean_T isSetupComplete;
+		dsp_BiquadFilter_0 cSFunObject;
+	};
 }
-
-#endif
-
-// End of code generation (BiquadFilter.h)

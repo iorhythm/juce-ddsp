@@ -7,17 +7,11 @@
 //
 //  Code generation for function 'additive'
 //
-
-
-//
 //  Abstract:
 //       MATLAB for code generation function to initialize non-finites,
 //       (Inf, NaN and -Inf).
-
-// Include files
 #include "rt_nonfinite.h"
-#include <cmath>
-#include <limits>
+
 
 real_T rtNaN = std::numeric_limits<real_T>::quiet_NaN();
 real_T rtInf = std::numeric_limits<real_T>::infinity();

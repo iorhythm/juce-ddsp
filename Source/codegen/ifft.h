@@ -7,25 +7,17 @@
 //
 //  Code generation for function 'ifft'
 //
+#pragma once
 
+#include <cstring>
 
-#ifndef IFFT_H
-#define IFFT_H
+#include "FFTImplementationCallback.h"
 
-// Include files
-#include "rtwtypes.h"
-#include "coder_array.h"
-#include <cstddef>
-#include <cstdlib>
 
 // Function Declarations
 namespace coder
 {
-  void ifft(const creal_T x[65], creal_T y[65]);
-  void ifft(const ::coder::array<creal_T, 1U> &x, double varargin_1, ::coder::
-            array<creal_T, 1U> &y);
+	void ifft( const creal_T x[ 65 ], creal_T y[ 65 ] );
+	void ifft( const ::coder::array<creal_T, 1U>& x, double varargin_1, ::coder::
+		array<creal_T, 1U>& y );
 }
-
-#endif
-
-// End of code generation (ifft.h)

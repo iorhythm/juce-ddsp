@@ -7,66 +7,62 @@
 //
 //  Code generation for function 'ColoredNoise'
 //
+#pragma once
 
-
-#ifndef COLOREDNOISE_H
-#define COLOREDNOISE_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
+#include <cstring>
+
+#include "randn.h"
+#include "rt_nonfinite.h"
+
 
 // Type Definitions
-namespace coder
+namespace coder::dsp
 {
-  namespace dsp
-  {
-    class ColoredNoise
-    {
-     public:
-      ColoredNoise *init();
-      void step(double varargout_1[4096]);
-      void setupAndReset();
-      void setup();
-      void release();
-     private:
-      int isInitialized;
-      boolean_T isSetupComplete;
-    };
+	//________________________________________________________________________________
+	class ColoredNoise
+	{
+	public:
+		ColoredNoise* init();
+		void step( double varargout_1[ 4096 ] );
+		void setupAndReset();
+		void setup();
+		void release();
+	private:
+		int isInitialized;
+		boolean_T isSetupComplete;
+	};
 
-    class b_ColoredNoise
-    {
-     public:
-      b_ColoredNoise *init();
-      void step(double varargout_1[4096]);
-      void setupAndReset();
-      void setup();
-      void release();
-     protected:
-      double pFilterStates[10];
-     private:
-      int isInitialized;
-      boolean_T isSetupComplete;
-    };
+	//________________________________________________________________________________
+	class b_ColoredNoise
+	{
+	public:
+		b_ColoredNoise* init();
+		void step( double varargout_1[ 4096 ] );
+		void setupAndReset();
+		void setup();
+		void release();
+	protected:
+		double pFilterStates[ 10 ];
+	private:
+		int isInitialized;
+		boolean_T isSetupComplete;
+	};
 
-    class c_ColoredNoise
-    {
-     public:
-      c_ColoredNoise *init();
-      void step(double varargout_1[4096]);
-      void setupAndReset();
-      void setup();
-      void release();
-     protected:
-      double pFilterStates[255];
-     private:
-      int isInitialized;
-      boolean_T isSetupComplete;
-    };
-  }
+	//________________________________________________________________________________
+	class c_ColoredNoise
+	{
+	public:
+		c_ColoredNoise* init();
+		void step( double varargout_1[ 4096 ] );
+		void setupAndReset();
+		void setup();
+		void release();
+	protected:
+		double pFilterStates[ 255 ];
+	private:
+		int isInitialized;
+		boolean_T isSetupComplete;
+	};
 }
-
-#endif
-
-// End of code generation (ColoredNoise.h)

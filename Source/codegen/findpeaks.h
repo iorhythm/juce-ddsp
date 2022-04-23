@@ -6,25 +6,14 @@
 //  findpeaks.h
 //
 //  Code generation for function 'findpeaks'
-//
+#pragma once
 
+#include "eml_setop.h"
 
-#ifndef FINDPEAKS_H
-#define FINDPEAKS_H
-
-// Include files
-#include "rtwtypes.h"
-#include "coder_array.h"
-#include <cstddef>
-#include <cstdlib>
 
 // Function Declarations
 namespace coder
 {
-  void findpeaks(const ::coder::array<double, 1U> &Yin, ::coder::array<double,
-                 1U> &Ypk, ::coder::array<double, 1U> &Xpk);
+	void findpeaks( const ::coder::array<double, 1U>& Yin, ::coder::array<double,
+		1U>& Ypk, ::coder::array<double, 1U>& Xpk );
 }
-
-#endif
-
-// End of code generation (findpeaks.h)

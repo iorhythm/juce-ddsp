@@ -11,14 +11,6 @@
 
 // Include files
 #include "scale_f0.h"
-#include "DDSPSynth_data.h"
-#include "DDSPSynth_initialize.h"
-#include "DDSPSynth_rtwutil.h"
-#include "rt_nonfinite.h"
-#include "rt_nonfinite.h"
-#include <cmath>
-#include <cstring>
-#include <math.h>
 
 // Function Definitions
 void scale_f0(const double f0_in[100], boolean_T to_midi, double f0_scaled[100])

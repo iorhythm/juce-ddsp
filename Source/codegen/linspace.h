@@ -6,24 +6,17 @@
 //  linspace.h
 //
 //  Code generation for function 'linspace'
-//
+#pragma once
 
-
-#ifndef LINSPACE_H
-#define LINSPACE_H
-
-// Include files
-#include "rtwtypes.h"
-#include "coder_array.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "rt_nonfinite.h"
+#include "coder_array.h"
+
 
 // Function Declarations
 namespace coder
 {
-  void linspace(double d2, double n, ::coder::array<double, 2U> &y);
+	void linspace( double d2, double n, ::coder::array<double, 2U>& y );
 }
-
-#endif
-
-// End of code generation (linspace.h)

@@ -6,26 +6,13 @@
 //  sort.h
 //
 //  Code generation for function 'sort'
-//
+#pragma once
 
+#include "sortIdx.h"
 
-#ifndef SORT_H
-#define SORT_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
 
 // Function Declarations
-namespace coder
+namespace coder::internal
 {
-  namespace internal
-  {
-    void sort(double x[6], int idx[6]);
-  }
+	void sort( double x[ 6 ], int idx[ 6 ] );
 }
-
-#endif
-
-// End of code generation (sort.h)

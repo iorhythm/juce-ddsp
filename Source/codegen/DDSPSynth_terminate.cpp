@@ -6,19 +6,11 @@
 //  DDSPSynth_terminate.cpp
 //
 //  Code generation for function 'DDSPSynth_terminate'
-//
-
-
-// Include files
 #include "DDSPSynth_terminate.h"
-#include "DDSPSynth_data.h"
-#include "rt_nonfinite.h"
 
-// Function Definitions
+
 void DDSPSynth_terminate()
 {
-  // (no terminate code required)
-  isInitialized_DDSPSynth = false;
+	// (no terminate code required)
+	isInitialized_DDSPSynth = false;
 }
-
-// End of code generation (DDSPSynth_terminate.cpp)

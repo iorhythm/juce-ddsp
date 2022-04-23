@@ -6,42 +6,32 @@
 //  ProcessConstructorArguments.h
 //
 //  Code generation for function 'ProcessConstructorArguments'
-//
+#pragma once
 
+#include "SystemProp.h"
 
-#ifndef PROCESSCONSTRUCTORARGUMENTS_H
-#define PROCESSCONSTRUCTORARGUMENTS_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
 
 // Type Declarations
 namespace coder
 {
-  class weightingFilter;
+	class weightingFilter;
 }
 
 // Type Definitions
 namespace coder
 {
-  namespace matlab
-  {
-    namespace system
-    {
-      namespace coder
-      {
-        class ProcessConstructorArguments
-        {
-         public:
-          static void b_do(weightingFilter *obj, double varargin_2);
-        };
-      }
-    }
-  }
+	namespace matlab
+	{
+		namespace system
+		{
+			namespace coder
+			{
+				class ProcessConstructorArguments
+				{
+				public:
+					static void b_do( weightingFilter* obj, double varargin_2 );
+				};
+			}
+		}
+	}
 }
-
-#endif
-
-// End of code generation (ProcessConstructorArguments.h)

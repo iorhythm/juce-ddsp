@@ -7,15 +7,15 @@
 //
 //  Code generation for function 'additive'
 //
+#pragma once
 
+#include <cstring>
 
-#ifndef ADDITIVE_H
-#define ADDITIVE_H
+#include "DDSPSynth_initialize.h"
+#include "DDSPSynth_rtwutil.h"
+#include "linspace.h"
+#include "coder_array.h"
 
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
 
 // Function Declarations
 extern void additive(double n_samples, double sample_rate, const double
@@ -24,6 +24,3 @@ extern void additive(double n_samples, double sample_rate, const double
                      double prev_phases[100], double shift, double stretch,
                      double audio[4096], double last_phases[100]);
 
-#endif
-
-// End of code generation (additive.h)

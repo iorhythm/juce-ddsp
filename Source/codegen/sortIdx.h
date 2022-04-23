@@ -7,26 +7,19 @@
 //
 //  Code generation for function 'sortIdx'
 //
+#pragma once
 
-
-#ifndef SORTIDX_H
-#define SORTIDX_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "rt_nonfinite.h"
 
 // Function Declarations
 namespace coder
 {
-  namespace internal
-  {
-    void merge(int idx[6], double x[6], int offset, int np, int nq, int iwork[6],
-               double xwork[6]);
-  }
+	namespace internal
+	{
+		void merge( int idx[ 6 ], double x[ 6 ], int offset, int np, int nq, int iwork[ 6 ],
+			double xwork[ 6 ] );
+	}
 }
-
-#endif
-
-// End of code generation (sortIdx.h)

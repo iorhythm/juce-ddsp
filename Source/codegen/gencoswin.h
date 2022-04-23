@@ -6,17 +6,14 @@
 //  gencoswin.h
 //
 //  Code generation for function 'gencoswin'
-//
+#pragma once
 
-
-#ifndef GENCOSWIN_H
-#define GENCOSWIN_H
-
-// Include files
-#include "rtwtypes.h"
-#include "coder_array.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "coder_array.h"
+#include "rt_nonfinite.h"
+
 
 // Function Declarations
 namespace coder
@@ -24,7 +21,3 @@ namespace coder
   void calc_window(double m, double n, ::coder::array<double, 1U> &w);
   void calc_window(double m, double n, double w_data[], int w_size[1]);
 }
-
-#endif
-
-// End of code generation (gencoswin.h)

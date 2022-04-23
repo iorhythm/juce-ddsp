@@ -7,14 +7,7 @@
 //
 //  Code generation for function 'DDSPSynth_data'
 //
-
-
-// Include files
 #include "DDSPSynth_data.h"
-#include "rt_nonfinite.h"
 
-// Variable Definitions
 unsigned int state[625];
 boolean_T isInitialized_DDSPSynth = false;
-
-// End of code generation (DDSPSynth_data.cpp)

@@ -7,19 +7,10 @@
 //
 //  Code generation for function 'DDSPSynth_initialize'
 //
+#pragma once
 
-
-#ifndef DDSPSYNTH_INITIALIZE_H
-#define DDSPSYNTH_INITIALIZE_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
+#include "DDSPSynth_data.h"
+#include "eml_rand_mt19937ar_stateful.h"
 
 // Function Declarations
 extern void DDSPSynth_initialize();
-
-#endif
-
-// End of code generation (DDSPSynth_initialize.h)

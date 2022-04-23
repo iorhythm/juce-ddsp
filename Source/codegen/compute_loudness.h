@@ -7,20 +7,16 @@
 //
 //  Code generation for function 'compute_loudness'
 //
+#pragma once
 
+#include "BiquadFilter.h"
+#include "DDSPSynth_initialize.h"
+#include "DDSPSynth_rtwutil.h"
+#include "FFTImplementationCallback.h"
+#include "gencoswin.h"
+#include "iseven.h"
+#include "weightingFilter.h"
 
-#ifndef COMPUTE_LOUDNESS_H
-#define COMPUTE_LOUDNESS_H
-
-// Include files
-#include "rtwtypes.h"
-#include <cstddef>
-#include <cstdlib>
 
 // Function Declarations
-extern double compute_loudness(double n_samples, const double audio[4096],
-  double sample_rate);
-
-#endif
-
-// End of code generation (compute_loudness.h)
+extern double compute_loudness(double n_samples, const double audio[4096], double sample_rate);

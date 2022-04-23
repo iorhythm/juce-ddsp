@@ -6,23 +6,15 @@
 //  iseven.h
 //
 //  Code generation for function 'iseven'
-//
+#pragma once
 
-
-#ifndef ISEVEN_H
-#define ISEVEN_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
+
+#include "rt_nonfinite.h"
 
 // Function Declarations
 namespace coder
 {
-  boolean_T iseven(double x);
+	boolean_T iseven( double x );
 }
-
-#endif
-
-// End of code generation (iseven.h)

@@ -7,19 +7,13 @@
 //
 //  Code generation for function 'DDSPSynth_terminate'
 //
+#pragma once
 
-
-#ifndef DDSPSYNTH_TERMINATE_H
-#define DDSPSYNTH_TERMINATE_H
-
-// Include files
-#include "rtwtypes.h"
 #include <cstddef>
 #include <cstdlib>
 
+#include "DDSPSynth_data.h"
+
+
 // Function Declarations
 extern void DDSPSynth_terminate();
-
-#endif
-
-// End of code generation (DDSPSynth_terminate.h)
