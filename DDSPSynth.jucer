@@ -59,6 +59,9 @@
               file="Source/SubtractiveComponent.h"/>
       </GROUP>
       <GROUP id="{EC1CE48D-AFDF-312B-B94A-6D056A9FE965}" name="DDSP">
+        <FILE id="tFFvq9" name="AdditiveSynth.cpp" compile="1" resource="0"
+              file="Source/AdditiveSynth.cpp"/>
+        <FILE id="Xtokm3" name="AdditiveSynth.h" compile="0" resource="0" file="Source/AdditiveSynth.h"/>
         <FILE id="KMPRVN" name="AubioHandler.cpp" compile="1" resource="0"
               file="Source/AubioHandler.cpp"/>
         <FILE id="ZGYOtX" name="AubioHandler.h" compile="0" resource="0" file="Source/AubioHandler.h"/>
@@ -70,16 +73,10 @@
         <FILE id="DtO4j2" name="ColoredNoise.cpp" compile="1" resource="0"
               file="Source/codegen/ColoredNoise.cpp"/>
         <FILE id="OjeyQy" name="ColoredNoise.h" compile="0" resource="0" file="Source/codegen/ColoredNoise.h"/>
-        <FILE id="F4T2T1" name="compute_loudness.cpp" compile="1" resource="0"
-              file="Source/codegen/compute_loudness.cpp"/>
-        <FILE id="uMhjQh" name="compute_loudness.h" compile="0" resource="0"
-              file="Source/codegen/compute_loudness.h"/>
+        <FILE id="jsnKeQ" name="DDSPCommon.cpp" compile="1" resource="0" file="Source/DDSPCommon.cpp"/>
+        <FILE id="OhExgk" name="DDSPCommon.h" compile="0" resource="0" file="Source/DDSPCommon.h"/>
         <FILE id="cTOzE7" name="DDSPSynth.cpp" compile="1" resource="0" file="Source/codegen/DDSPSynth.cpp"/>
         <FILE id="wz12Rm" name="DDSPSynth.h" compile="0" resource="0" file="Source/codegen/DDSPSynth.h"/>
-        <FILE id="K3MG6K" name="eml_rand_mt19937ar.cpp" compile="1" resource="0"
-              file="Source/codegen/eml_rand_mt19937ar.cpp"/>
-        <FILE id="pt5Fzb" name="eml_rand_mt19937ar.h" compile="0" resource="0"
-              file="Source/codegen/eml_rand_mt19937ar.h"/>
         <FILE id="r8rIQL" name="eml_setop.cpp" compile="1" resource="0" file="Source/codegen/eml_setop.cpp"/>
         <FILE id="Gn9EgF" name="eml_setop.h" compile="0" resource="0" file="Source/codegen/eml_setop.h"/>
         <FILE id="GiCThP" name="fft.cpp" compile="1" resource="0" file="Source/codegen/fft.cpp"/>
@@ -88,8 +85,6 @@
               resource="0" file="Source/codegen/FFTImplementationCallback.cpp"/>
         <FILE id="KQQZ7Y" name="FFTImplementationCallback.h" compile="0" resource="0"
               file="Source/codegen/FFTImplementationCallback.h"/>
-        <FILE id="uTrHom" name="fftshift.cpp" compile="1" resource="0" file="Source/codegen/fftshift.cpp"/>
-        <FILE id="BICWnQ" name="fftshift.h" compile="0" resource="0" file="Source/codegen/fftshift.h"/>
         <FILE id="Tsbeqx" name="findpeaks.cpp" compile="1" resource="0" file="Source/codegen/findpeaks.cpp"/>
         <FILE id="MKq7gP" name="findpeaks.h" compile="0" resource="0" file="Source/codegen/findpeaks.h"/>
         <FILE id="OeU7s5" name="gencoswin.cpp" compile="1" resource="0" file="Source/codegen/gencoswin.cpp"/>
@@ -118,6 +113,10 @@
         <FILE id="cGnXu0" name="sort.h" compile="0" resource="0" file="Source/codegen/sort.h"/>
         <FILE id="yCTHvj" name="sortIdx.cpp" compile="1" resource="0" file="Source/codegen/sortIdx.cpp"/>
         <FILE id="wbj3Rt" name="sortIdx.h" compile="0" resource="0" file="Source/codegen/sortIdx.h"/>
+        <FILE id="MSdmnn" name="SubtractiveSynth.cpp" compile="1" resource="0"
+              file="Source/SubtractiveSynth.cpp"/>
+        <FILE id="akcX0U" name="SubtractiveSynth.h" compile="0" resource="0"
+              file="Source/SubtractiveSynth.h"/>
         <FILE id="B0uhJL" name="SystemProp.cpp" compile="1" resource="0" file="Source/codegen/SystemProp.cpp"/>
         <FILE id="Sk5z2Z" name="SystemProp.h" compile="0" resource="0" file="Source/codegen/SystemProp.h"/>
         <FILE id="gwLLC8" name="TensorflowHandler.cpp" compile="1" resource="0"

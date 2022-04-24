@@ -715,5 +715,3 @@ namespace coder
 		}
 	}
 }
-
-// End of code generation (fft.cpp)

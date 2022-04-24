@@ -16,21 +16,12 @@ namespace coder
 	class WeightingFilter;
 }
 
-// Type Definitions
-namespace coder
+
+namespace coder::matlab::system::coder
 {
-	namespace matlab
+	class SystemProp
 	{
-		namespace system
-		{
-			namespace coder
-			{
-				class SystemProp
-				{
-				public:
-					static void matlabCodegenNotifyAnyProp( WeightingFilter* obj );
-				};
-			}
-		}
-	}
+	public:
+		static void matlabCodegenNotifyAnyProp( WeightingFilter* obj );
+	};
 }

@@ -143,6 +143,13 @@ void DdspsynthAudioProcessor::prepareToPlay( double sampleRate, int samplesPerBl
 		static_cast<uint32>( numChannels )
 	};
 
+	ddspSynth.additiveSynth.prepare( spec );
+	ddspSynth.additiveSynth.shift = *synthTree.getRawParameterValue( "additiveShift" );
+	ddspSynth.additiveSynth.stretch = *synthTree.getRawParameterValue( "additiveStretch" );
+		
+	//ddspSynth.subtractiveSynth.prepare( spec );
+	ddspSynth.subtractiveSynth.colour = *synthTree.getRawParameterValue( "noiseColor" );
+
 	tfHandler.setAsyncUpdater( this );
 
 	const auto param = (AudioParameterChoice*) modelTree.getParameter( "modelSelect" );
@@ -160,15 +167,15 @@ void DdspsynthAudioProcessor::prepareToPlay( double sampleRate, int samplesPerBl
 	abHandler.setTolerance( 0.8 );
 	abHandler.setSilence( -50 );
 
-	amplitudes.clear();
-	amplitudesCopy.clear();
+	amplitudes.fill( {} );
+	amplitudesCopy.fill( {} );
 
 	magnitudes.fill( 6.0 );
 	f0.fill( 0.0 );
 	harmonics.fill( 0.0 );
 
-	addBuffer.clear();
-	subBuffer.clear();
+	addBuffer.fill( {} );
+	subBuffer.fill( {} );
 
 	addSectionGain.prepare( spec );
 	addSectionGain.setGainDecibels( *synthTree.getRawParameterValue( "additiveGain" ) );
@@ -226,7 +233,7 @@ void DdspsynthAudioProcessor::processBlock( AudioBuffer<float>& buffer, MidiBuff
 	{
 		const auto* in_l = buffer.getReadPointer( 0 );
 		auto aubioResults { abHandler.process( buffer ) };
-		DBG( "AUBIO Confidence = " + String{  aubioResults.confidence } );
+		//DBG( "AUBIO Confidence = " + String{  aubioResults.confidence } );
 
 		// TODO mlInput only used for compute_loudness, which is currently commented out?!
 		mlInput.fill( 0.0f );
@@ -299,34 +306,29 @@ void DdspsynthAudioProcessor::processBlock( AudioBuffer<float>& buffer, MidiBuff
 	if(modelOn)
 		amplitudesCopy = amplitudes;
 	else
-		FVOP::fill( amplitudesCopy.getWritePointer( 0 ), static_cast< double >( midiVelocity * adsrVelocity ), maxAmplitudes );
+		FVOP::fill( amplitudesCopy.data(), static_cast< double >( midiVelocity * adsrVelocity ), maxAmplitudes );
 
 	if(*synthTree.getRawParameterValue( "additiveOn" ) && shouldSynthesize)
 	{
-		ddspSynth.additive( (double) numSamples, getSampleRate(), 
-			amplitudesCopy.getReadPointer( 0 ), 
+		ddspSynth.additiveSynth.process( (double) numSamples, 
+			amplitudesCopy, 
 			n_harmonics, 
-			harms_copy.data(), 
-			f0.data(), 
-			phaseBuffer_in.data(), 
-			(double) *synthTree.getRawParameterValue( "additiveShift" ), 
-			(double) *synthTree.getRawParameterValue( "additiveStretch" ), 
-			addBuffer.getWritePointer( 0 ), 
-			phaseBuffer_out.data()
+			harms_copy, 
+			f0, 
+			phaseBufferI, 
+			addBuffer, 
+			phaseBufferO
 		);
 	}
 	else
-		addBuffer.clear();
+		addBuffer.fill( {} );
 
 	if(*synthTree.getRawParameterValue( "noiseOn" ) && shouldSynthesize)
-	{
-		ddspSynth.subtractive( numSamples, mags_copy.data(), (double) *synthTree.getRawParameterValue( "noiseColor" ), initial_bias, subBuffer.getWritePointer(0));
-	}
+		ddspSynth.subtractiveSynth.process( numSamples, mags_copy, initial_bias, subBuffer );
 	else
-		subBuffer.clear();
+		subBuffer.fill( {} );
 
-	for(int i = 0; i < maxHarmonics; ++i)
-		phaseBuffer_in[ i ] = phaseBuffer_out[ i ];
+	phaseBufferI = phaseBufferO;
 
 	auto* outL = buffer.getWritePointer( 0 );
 	auto* outR = buffer.getWritePointer( 1 );
@@ -336,7 +338,7 @@ void DdspsynthAudioProcessor::processBlock( AudioBuffer<float>& buffer, MidiBuff
 		// workaround to prevent MIDI-related hearing damage
 		const auto outGain { outputGain.getGainLinear() * (!modelOn ? 0.02f : 1.0f ) };
 
-		const auto out { ( addSectionGain.processSample( addBuffer.getSample( 0, i ) ) + subSectionGain.processSample( subBuffer.getSample( 0, i ) ) ) * outGain };
+		const auto out { ( addSectionGain.processSample( addBuffer[ i ] ) + subSectionGain.processSample( subBuffer[ i ] ) ) * outGain };
 
 		pushNextSampleIntoFifo( out );
 
@@ -379,7 +381,7 @@ void DdspsynthAudioProcessor::setModelOutput( const TensorflowHandler::ModelResu
 	for(int i = 0; i < maxMagnitudes; i++)
 		magnitudes[ i ] = tfResults.noiseMagnitudes[ i ];
 
-	FVOP::fill( amplitudes.getWritePointer( 0 ), (double) tfResults.amplitudes[ 0 ] + 1.0f, numSamples );
+	FVOP::fill( amplitudes.data(), (double) tfResults.amplitudes[ 0 ] + 1.0f, numSamples );
 }
 
 
@@ -456,10 +458,23 @@ void DdspsynthAudioProcessor::parameterChanged( const String& parameterID, float
 	{
 		subSectionGain.setGainDecibels( newValue );
 	}
+	else if( parameterID == "noiseColor" )
+	{
+		ddspSynth.subtractiveSynth.colour = newValue;
+	}
 	else if( parameterID == "outputGain" )
 	{
 		outputGain.setGainDecibels( newValue );
 	}
+	else if(parameterID == "additiveShift")
+	{
+		ddspSynth.additiveSynth.shift = newValue;
+	}
+	else if(parameterID == "additiveStretch")
+	{
+		ddspSynth.additiveSynth.stretch = newValue;
+	}
+
 }
 
 AudioProcessorValueTreeState::ParameterLayout DdspsynthAudioProcessor::createParameterLayout()
@@ -468,12 +483,12 @@ AudioProcessorValueTreeState::ParameterLayout DdspsynthAudioProcessor::createPar
 
 	// Input
 	layout.add( std::make_unique<AudioParameterChoice>( "inputIsLine", "Input Selector", StringArray{ "MIDI", "AUDIO IN" }, 0 ) );
-	// Additive
+	// AdditiveSynth
 	layout.add( std::make_unique<AudioParameterBool>( "additiveOn", "Additive synth on", true ) );
 	layout.add( std::make_unique<AudioParameterFloat>( "additiveShift", "Shift amount", NormalisableRange< float >{ -12.0f, 12.0f, 0.1f }, 0.0f ) );
 	layout.add( std::make_unique<AudioParameterFloat>( "additiveStretch", "Stretch amount", NormalisableRange< float >{-1.0f, 1.0f, 0.01f }, 0.0f ) );
 	layout.add( std::make_unique<AudioParameterFloat>( "additiveGain", "Additive gain", NormalisableRange< float >{ -12.0f, 6.0f, 0.01f }, 0.0f ) );
-	// Subtractive
+	// SubtractiveSynth
 	layout.add( std::make_unique<AudioParameterBool>( "noiseOn", "Noise synth on", true ) );
 	layout.add( std::make_unique<AudioParameterFloat>( "noiseColor", "Noise color", NormalisableRange< float >{ -1.0f, 1.0f, 0.01f }, 0.0f ) );
 	layout.add( std::make_unique<AudioParameterFloat>( "noiseGain", "Noise gain", -12.0f, 6.0f, 0.0f ) );

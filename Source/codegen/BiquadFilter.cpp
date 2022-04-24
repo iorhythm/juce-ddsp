@@ -25,7 +25,7 @@ namespace coder::dspcodegen
 
 	BiquadFilter* BiquadFilter::init()
 	{
-		BiquadFilter* obj = this;
+		auto* obj = this;
 		obj->isInitialized = 0;
 
 		// System object Constructor function: dsp.BiquadFilter
@@ -41,9 +41,7 @@ namespace coder::dspcodegen
 
 		// System object Initialization function: dsp.BiquadFilter
 		for(int i = 0; i < 6; i++)
-		{
 			cSFunObject.W0_FILT_STATES[ i ] = cSFunObject.P0_ICRTP;
-		}
 	}
 
 	void BiquadFilter::matlabCodegenDestructor()
@@ -58,9 +56,7 @@ namespace coder::dspcodegen
 	void BiquadFilter::release()
 	{
 		if(isInitialized == 1)
-		{
 			isInitialized = 2;
-		}
 	}
 
 	void BiquadFilter::reset()
@@ -69,9 +65,7 @@ namespace coder::dspcodegen
 		{
 			// System object Initialization function: dsp.BiquadFilter
 			for(int i = 0; i < 6; i++)
-			{
 				cSFunObject.W0_FILT_STATES[ i ] = cSFunObject.P0_ICRTP;
-			}
 		}
 	}
 
@@ -82,16 +76,16 @@ namespace coder::dspcodegen
 		isSetupComplete = true;
 	}
 
-	void BiquadFilter::step( const double varargin_1[ 2048 ], const double
-		varargin_2[ 9 ], const double varargin_3[ 6 ], const double varargin_4[ 4 ],
-		double varargout_1[ 2048 ] )
+	void BiquadFilter::step( const double varargin_1[ 2048 ], 
+							 const double varargin_2[ 9 ], 
+							 const double varargin_3[ 6 ], 
+							 const double varargin_4[ 4 ], 
+							 double varargout_1[ 2048 ] )
 	{
 		if(isInitialized != 1)
-		{
 			setupAndReset();
-		}
 
-		auto* obj = &this->cSFunObject;
+		auto* obj = &cSFunObject;
 
 		// System object Outputs function: dsp.BiquadFilter
 		int ioIdx {};

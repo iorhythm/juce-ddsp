@@ -15,15 +15,6 @@
 #include "rt_nonfinite.h"
 
 
-// Type Definitions
-struct dsp_BiquadFilter_0
-{
-	int S0_isInitialized;
-	double W0_FILT_STATES[ 6 ];
-	int W1_PreviousNumChannels;
-	double P0_ICRTP;
-};
-
 namespace coder::dspcodegen
 {
 	class BiquadFilter
@@ -35,9 +26,11 @@ namespace coder::dspcodegen
 		BiquadFilter* init();
 		void setup();
 		void reset();
-		void step( const double varargin_1[ 2048 ], const double varargin_2[ 9 ], const
-			double varargin_3[ 6 ], const double varargin_4[ 4 ], double
-			varargout_1[ 2048 ] );
+		void step( const double varargin_1[ 2048 ], 
+				   const double varargin_2[ 9 ], 
+				   const double varargin_3[ 6 ], 
+				   const double varargin_4[ 4 ], 
+				   double varargout_1[ 2048 ] );
 		void setupAndReset();
 		void matlabCodegenDestructor();
 		void release();
@@ -45,6 +38,14 @@ namespace coder::dspcodegen
 		boolean_T matlabCodegenIsDeleted;
 
 	private:
+		struct dsp_BiquadFilter_0
+		{
+			int S0_isInitialized;
+			double W0_FILT_STATES[ 6 ];
+			int W1_PreviousNumChannels;
+			double P0_ICRTP;
+		};
+
 		int isInitialized;
 		boolean_T isSetupComplete;
 		dsp_BiquadFilter_0 cSFunObject;

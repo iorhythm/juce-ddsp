@@ -14,10 +14,10 @@ namespace coder
 {
 	void WeightingFilter::checkTunableProps()
 	{
-		if(this->TunablePropsChanged)
+		if(tunablePropsChanged)
 		{
-			this->TunablePropsChanged = false;
-			this->designFilter();
+			tunablePropsChanged = false;
+			designFilter();
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace coder
 		int i;
 		int idx;
 		int k;
-		fs = this->get_SampleRate();
+		fs = get_SampleRate();
 		twoFs = 2.0 * fs;
 		den_tmp = 0.0 / twoFs;
 		fs = ( den_tmp + 1.0 ) / ( 1.0 - den_tmp );
@@ -148,8 +148,7 @@ namespace coder
 		}
 
 		std::memset( &sos[ 0 ], 0, 18U * sizeof( double ) );
-		this->pScaleValues[ 0 ] = 7.3863929841439228E+9 * ( twoFs * twoFs * twoFs *
-			twoFs ) / zb_idx_1;
+		pScaleValues[ 0 ] = 7.3863929841439228E+9 * ( twoFs * twoFs * twoFs * twoFs ) / zb_idx_1;
 		for(i = 0; i < 3; i++)
 		{
 			double zb_idx_2;
@@ -174,127 +173,123 @@ namespace coder
 			sos[ b_i + 12 ] = fs;
 			sos[ b_i + 6 ] = zb_idx_2;
 			sos[ b_i + 15 ] = twoFs;
-			this->pScaleValues[ i + 1 ] = 1.0;
+			pScaleValues[ i + 1 ] = 1.0;
 		}
 
 		for(b_i = 0; b_i < 3; b_i++)
 		{
-			this->pNumMatrix[ 3 * b_i ] = sos[ b_i ];
-			this->pNumMatrix[ 3 * b_i + 1 ] = sos[ b_i + 3 ];
-			this->pNumMatrix[ 3 * b_i + 2 ] = sos[ b_i + 6 ];
+			pNumMatrix[ 3 * b_i ] = sos[ b_i ];
+			pNumMatrix[ 3 * b_i + 1 ] = sos[ b_i + 3 ];
+			pNumMatrix[ 3 * b_i + 2 ] = sos[ b_i + 6 ];
 			idx = b_i << 1;
-			this->pDenMatrix[ idx ] = sos[ b_i + 12 ];
-			this->pDenMatrix[ idx + 1 ] = sos[ b_i + 15 ];
+			pDenMatrix[ idx ] = sos[ b_i + 12 ];
+			pDenMatrix[ idx + 1 ] = sos[ b_i + 15 ];
 		}
 	}
 
 	double WeightingFilter::get_SampleRate() const
 	{
-		return this->pSampleRateDialog;
+		return pSampleRateDialog;
 	}
 
 	void WeightingFilter::release()
 	{
-		if(this->isInitialized == 1)
+		if(isInitialized == 1)
 		{
-			this->isInitialized = 2;
-			this->releaseWrapper();
+			isInitialized = 2;
+			releaseWrapper();
 		}
 	}
 
 	void WeightingFilter::releaseWrapper()
 	{
-		if(this->isSetupComplete)
+		if(isSetupComplete)
 		{
-			this->pFilter.release();
-			this->pNumChannels = -1.0;
+			pFilter.release();
+			pNumChannels = -1.0;
 		}
 	}
 
 	void WeightingFilter::setup()
 	{
-		this->isSetupComplete = false;
-		this->isInitialized = 1;
-		this->get_SampleRate();
-		this->pNumChannels = 1.0;
-		this->designFilter();
-		this->pFilter.init();
-		this->pFilter.setup();
-		this->isSetupComplete = true;
-		this->TunablePropsChanged = false;
+		isSetupComplete = false;
+		isInitialized = 1;
+		get_SampleRate();
+		pNumChannels = 1.0;
+		designFilter();
+		pFilter.init();
+		pFilter.setup();
+		isSetupComplete = true;
+		tunablePropsChanged = false;
 	}
 
 	void WeightingFilter::setupAndReset()
 	{
-		this->setup();
-		this->pFilter.reset();
-		this->designFilter();
+		setup();
+		pFilter.reset();
+		designFilter();
 	}
 
 	WeightingFilter::WeightingFilter()
 	{
-		this->matlabCodegenIsDeleted = true;
+		matlabCodegenIsDeleted = true;
 	}
 
 	WeightingFilter::~WeightingFilter()
 	{
-		this->matlabCodegenDestructor();
+		matlabCodegenDestructor();
 	}
 
 	WeightingFilter* WeightingFilter::init( double varargin_2 )
 	{
-		WeightingFilter* obj;
-		obj = this;
+		auto* obj { this };
 		obj->pNumChannels = -1.0;
 		obj->isInitialized = 0;
-		matlab::system::coder::ProcessConstructorArguments::b_do( ( obj ), ( varargin_2 ) );
+		matlab::system::coder::ProcessConstructorArguments::b_do( obj, varargin_2 );
 		obj->matlabCodegenIsDeleted = false;
+
 		return obj;
 	}
 
 	boolean_T WeightingFilter::isLockedAndNotReleased() const
 	{
-		return this->isInitialized == 1;
+		return isInitialized == 1;
 	}
 
 	void WeightingFilter::matlabCodegenDestructor()
 	{
-		if(!this->matlabCodegenIsDeleted)
+		if(!matlabCodegenIsDeleted)
 		{
-			this->matlabCodegenIsDeleted = true;
-			this->release();
+			matlabCodegenIsDeleted = true;
+			release();
 		}
 	}
 
 	void WeightingFilter::set_SampleRate( double value )
 	{
-		this->pSampleRateDialog = value;
+		pSampleRateDialog = value;
 	}
 
-	void WeightingFilter::step( const double varargin_1[ 2048 ], double varargout_1
-		[ 2048 ] )
+	void WeightingFilter::step( const double varargin_1[ 2048 ], double varargout_1[ 2048 ] )
 	{
+		if(isInitialized != 1)
+			setupAndReset();
+
+		checkTunableProps();
+		
 		double obj[ 9 ];
+
+		std::memcpy( &obj[ 0 ], &pNumMatrix[ 0 ], 9U * sizeof( double ) );
+
 		double c_obj[ 6 ];
-		double b_obj[ 4 ];
-		if(this->isInitialized != 1)
-		{
-			this->setupAndReset();
-		}
-
-		this->checkTunableProps();
-		std::memcpy( &obj[ 0 ], &this->pNumMatrix[ 0 ], 9U * sizeof( double ) );
 		for(int i = 0; i < 6; i++)
-		{
-			c_obj[ i ] = this->pDenMatrix[ i ];
-		}
+			c_obj[ i ] = pDenMatrix[ i ];
 
-		b_obj[ 0 ] = this->pScaleValues[ 0 ];
-		b_obj[ 1 ] = this->pScaleValues[ 1 ];
-		b_obj[ 2 ] = this->pScaleValues[ 2 ];
-		b_obj[ 3 ] = this->pScaleValues[ 3 ];
-		this->pFilter.step( varargin_1, obj, c_obj, b_obj, varargout_1 );
+		double b_obj[ 4 ];
+		b_obj[ 0 ] = pScaleValues[ 0 ];
+		b_obj[ 1 ] = pScaleValues[ 1 ];
+		b_obj[ 2 ] = pScaleValues[ 2 ];
+		b_obj[ 3 ] = pScaleValues[ 3 ];
+		pFilter.step( varargin_1, obj, c_obj, b_obj, varargout_1 );
 	}
 }
-
-// End of code generation (WeightingFilter.cpp)

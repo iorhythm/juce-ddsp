@@ -9,10 +9,11 @@
 //
 #pragma once
 
-#include "eml_rand_mt19937ar.h"
+#include <array>
 
+#include "eml_rand_mt19937ar.h"
 
 namespace coder
 {
-	void randn( double r[ 4096 ], unsigned state[ 625 ] );
+
 }

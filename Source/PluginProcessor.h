@@ -18,9 +18,9 @@ public:
 	static constexpr auto fftOrder { 10 };
 	static constexpr auto fftSize { 1 << fftOrder };
 
-	static constexpr auto maxAmplitudes { 4096 };
-	static constexpr auto maxMagnitudes { 65 };
-	static constexpr auto maxHarmonics { 100 };
+	static constexpr auto& maxAmplitudes { DDSP::maxAmplitudes };
+	static constexpr auto& maxMagnitudes { DDSP::maxMagnitudes };
+	static constexpr auto& maxHarmonics { DDSP::maxHarmonics };
 	
 	//==============================================================================
 	DdspsynthAudioProcessor();
@@ -78,7 +78,7 @@ public:
 
 	void parameterChanged(const String& parameterID, float newValue ) override;
 
-	DDSPSynth ddspSynth;
+	DDSP::DDSPSynth ddspSynth;
 private:
 	// Parameters
 	AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
@@ -89,27 +89,27 @@ private:
 	
 	// Internal parameters
 	bool shouldSynthesize = true;
-	std::array< double, maxHarmonics > phaseBuffer_in;
-	std::array< double, maxHarmonics > phaseBuffer_out;
+	DDSP::Harmonics phaseBufferI;
+	DDSP::Harmonics phaseBufferO;
 	double ld;
 	double f0_in;
 	double f0_out;
 	std::array< float, maxAmplitudes > mlInput;
 	std::array< double, maxAmplitudes > f0;
 	int n_harmonics { 60 };
-	std::array< double, maxHarmonics > harmonics;
-	std::array< double, maxHarmonics > harms_copy;
-	std::array< double, maxHarmonics > userHarmonics;
+	DDSP::Harmonics harmonics;
+	DDSP::Harmonics harms_copy;
+	DDSP::Harmonics userHarmonics;
 	double initial_bias = -5.0f;
 
-	juce::AudioBuffer< double > amplitudes { 1, maxAmplitudes };
-	juce::AudioBuffer< double > amplitudesCopy { 1, maxAmplitudes };
+	DDSP::Amplitudes amplitudes;
+	DDSP::Amplitudes amplitudesCopy;
 	
-	juce::AudioBuffer< double > addBuffer { 1, maxAmplitudes };
-	juce::AudioBuffer< double > subBuffer { 1, maxAmplitudes };
+	DDSP::Amplitudes addBuffer;
+	DDSP::Amplitudes subBuffer;
 
-	std::array< double, maxMagnitudes > magnitudes;
-	std::array< double, maxMagnitudes > mags_copy;
+	DDSP::Magnitudes magnitudes;
+	DDSP::Magnitudes mags_copy;
 
 	int numSamples {};
 

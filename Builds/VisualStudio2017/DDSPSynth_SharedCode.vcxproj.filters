@@ -526,6 +526,9 @@
     <ClCompile Include="..\..\Source\SubtractiveComponent.cpp">
       <Filter>DDSPSynth\Source\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AdditiveSynth.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AubioHandler.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
@@ -535,13 +538,10 @@
     <ClCompile Include="..\..\Source\codegen\ColoredNoise.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\compute_loudness.cpp">
+    <ClCompile Include="..\..\Source\DDSPCommon.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\DDSPSynth.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\eml_rand_mt19937ar.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\eml_setop.cpp">
@@ -551,9 +551,6 @@
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\FFTImplementationCallback.cpp">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\codegen\fftshift.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\findpeaks.cpp">
@@ -590,6 +587,9 @@
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\sortIdx.cpp">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SubtractiveSynth.cpp">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\codegen\SystemProp.cpp">
@@ -2889,6 +2889,9 @@
     <ClInclude Include="..\..\Source\SubtractiveComponent.h">
       <Filter>DDSPSynth\Source\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AdditiveSynth.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AubioHandler.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
@@ -2904,13 +2907,10 @@
     <ClInclude Include="..\..\Source\codegen\ColoredNoise.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\compute_loudness.h">
+    <ClInclude Include="..\..\Source\DDSPCommon.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\DDSPSynth.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\eml_rand_mt19937ar.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\eml_setop.h">
@@ -2920,9 +2920,6 @@
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\FFTImplementationCallback.h">
-      <Filter>DDSPSynth\Source\DDSP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\codegen\fftshift.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\findpeaks.h">
@@ -2962,6 +2959,9 @@
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\sortIdx.h">
+      <Filter>DDSPSynth\Source\DDSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SubtractiveSynth.h">
       <Filter>DDSPSynth\Source\DDSP</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\codegen\SystemProp.h">

@@ -30,19 +30,22 @@ namespace coder
 		~WeightingFilter();
 
 		WeightingFilter* init( double varargin_2 );
-		boolean_T isLockedAndNotReleased() const;
-		void set_SampleRate( double value );
-		void step( const double varargin_1[ 2048 ], double varargout_1[ 2048 ] );
 		void setupAndReset();
 		void setup();
-		double get_SampleRate() const;
-		void checkTunableProps();
-		void matlabCodegenDestructor();
 		void release();
 		void releaseWrapper();
+		
+		double get_SampleRate() const;
+		void set_SampleRate( double value );
+		
+		void step( const double varargin_1[ 2048 ], double varargout_1[ 2048 ] );
+
+		boolean_T isLockedAndNotReleased() const;
+		void checkTunableProps();
+		void matlabCodegenDestructor();
 
 		boolean_T matlabCodegenIsDeleted;
-		boolean_T TunablePropsChanged;
+		boolean_T tunablePropsChanged;
 		dspcodegen::BiquadFilter pFilter;
 
 	protected:

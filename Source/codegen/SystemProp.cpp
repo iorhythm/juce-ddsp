@@ -9,25 +9,11 @@
 #include "SystemProp.h"
 
 
-// Function Definitions
-namespace coder
+namespace coder::matlab::system::coder
 {
-	namespace matlab
+	void SystemProp::matlabCodegenNotifyAnyProp( WeightingFilter* obj )
 	{
-		namespace system
-		{
-			namespace coder
-			{
-				void SystemProp::matlabCodegenNotifyAnyProp( WeightingFilter* obj )
-				{
-					if(obj->isLockedAndNotReleased())
-					{
-						obj->TunablePropsChanged = true;
-					}
-				}
-			}
-		}
+		if(obj->isLockedAndNotReleased())
+			obj->tunablePropsChanged = true;
 	}
 }
-
-// End of code generation (SystemProp.cpp)
